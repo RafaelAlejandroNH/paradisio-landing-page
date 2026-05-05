@@ -1,0 +1,11 @@
+# Sirve los archivos de media como binarios sin que Git intente hacer diff de ellos
+Fotos/*.jpg binary
+Fotos/*.JPG binary
+Fotos/*.jpeg binary
+Fotos/*.JPEG binary
+Fotos/*.png binary
+Fotos/*.PNG binary
+Fotos/*.mp4 binary
+Fotos/*.MP4 binary
+Fotos/*.mov binary
+Fotos/*.MOV binary

@@ -12,7 +12,7 @@
 <meta property="og:description" content="Más privada que un salón, más especial que una casa. Alberca climatizada, jacuzzi, jardín y área lounge. Reserva tu experiencia exclusiva desde $2,400 MXN." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://paradisioterraza.com/" />
-<meta property="og:image" content="../Fotos/IMG_5337.JPEG" />
+<meta property="og:image" content="Fotos/IMG_5337.JPEG" />
 <meta property="og:locale" content="es_MX" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Paradisio Terraza — Privada, exclusiva y memorable" />
@@ -27,7 +27,7 @@
   "url":"https://paradisioterraza.com",
   "telephone":"+523310394617",
   "priceRange":"$2,400 - $3,400 MXN",
-  "image":"../Fotos/IMG_5337.JPEG",
+  "image":"Fotos/IMG_5337.JPEG",
   "address":{
     "@type":"PostalAddress",
     "streetAddress":"5 de Febrero 161",
@@ -65,6 +65,9 @@
   ]
 }
 </script>
+<!-- Precarga recursos críticos above-the-fold -->
+<link rel="preload" href="Fotos/IMG_5337.JPEG" as="image" fetchpriority="high" />
+<link rel="preload" href="Fotos/5b146bc15602439785b3f2bf98a4c260.mp4" as="video" type="video/mp4" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -388,7 +391,7 @@
 
   /* ==================== EVENTOS ==================== */
   .events{
-    background:url('../Fotos/IMG_5337.JPEG') center/cover fixed;
+    background:url('Fotos/IMG_5337.JPEG') center/cover fixed;
     color:var(--white);text-align:center;position:relative;
   }
   .events::before{content:'';position:absolute;inset:0;background:rgba(26,29,23,.65)}
@@ -693,8 +696,8 @@
 <!-- ============ HERO ============ -->
 <section class="hero" id="top">
   <div class="hero-bg">
-    <video autoplay muted loop playsinline poster="../Fotos/IMG_5337.JPEG">
-      <source src="../Fotos/5b146bc15602439785b3f2bf98a4c260.mp4" type="video/mp4" />
+    <video autoplay muted loop playsinline poster="Fotos/IMG_5337.JPEG">
+      <source src="Fotos/5b146bc15602439785b3f2bf98a4c260.mp4" type="video/mp4" />
     </video>
   </div>
   <div class="hero-content">
@@ -728,7 +731,7 @@
       <p data-i18n="exp.p3">Pensado para celebraciones íntimas, escapadas de fin de semana y momentos que merecen un lugar a su altura.</p>
     </div>
     <div class="experience-image reveal">
-      <img src="../Fotos/IMG_5097.JPEG" alt="Paradisio Terraza experiencia" loading="lazy" />
+      <img src="Fotos/IMG_5097.JPEG" alt="Paradisio Terraza experiencia" loading="lazy" decoding="async" fetchpriority="low" />
     </div>
   </div>
 </section>
@@ -1095,26 +1098,26 @@ const AMENITIES = [
 
 /* ====================== GALLERY ASSETS ====================== */
 const GALLERY = [
-  {t:'img', src:'../Fotos/IMG_4669.JPEG'},
-  {t:'img', src:'../Fotos/IMG_5455.JPEG'},
-  {t:'video', src:'../Fotos/IMG_8176.MP4'},
-  {t:'img', src:'../Fotos/IMG_4683.JPEG'},
-  {t:'img', src:'../Fotos/IMG_7896.JPEG'},
-  {t:'img', src:'../Fotos/IMG_5506.JPEG'},
-  {t:'img', src:'../Fotos/IMG_4834.JPEG'},
-  {t:'img', src:'../Fotos/IMG_9103.JPEG'},
-  {t:'video', src:'../Fotos/c0402babc3e4419f8e5989c7604f553f.MP4'},
-  {t:'img', src:'../Fotos/IMG_5013.JPEG'},
-  {t:'img', src:'../Fotos/IMG_7921.JPEG'},
-  {t:'img', src:'../Fotos/IMG_4671.JPEG'},
-  {t:'img', src:'../Fotos/IMG_8174.JPEG'},
-  {t:'img', src:'../Fotos/IMG_9451.JPEG'},
-  {t:'img', src:'../Fotos/IMG_4835.JPEG'},
-  {t:'img', src:'../Fotos/IMG_9459.JPEG'},
-  {t:'img', src:'../Fotos/IMG_6767.JPEG'},
-  {t:'img', src:'../Fotos/IMG_3745.JPEG'},
-  {t:'img', src:'../Fotos/BBAB7088-2A0A-44F9-92CE-EA278A34ECF3.jpg'},
-  {t:'img', src:'../Fotos/540e27ae-f0a5-4816-930b-bfdc9da147ee.JPEG'}
+  {t:'img', src:'Fotos/IMG_4669.JPEG'},
+  {t:'img', src:'Fotos/IMG_5455.JPEG'},
+  {t:'video', src:'Fotos/IMG_8176.MP4'},
+  {t:'img', src:'Fotos/IMG_4683.JPEG'},
+  {t:'img', src:'Fotos/IMG_7896.JPEG'},
+  {t:'img', src:'Fotos/IMG_5506.JPEG'},
+  {t:'img', src:'Fotos/IMG_4834.JPEG'},
+  {t:'img', src:'Fotos/IMG_9103.JPEG'},
+  {t:'video', src:'Fotos/c0402babc3e4419f8e5989c7604f553f.MP4'},
+  {t:'img', src:'Fotos/IMG_5013.JPEG'},
+  {t:'img', src:'Fotos/IMG_7921.JPEG'},
+  {t:'img', src:'Fotos/IMG_4671.JPEG'},
+  {t:'img', src:'Fotos/IMG_8174.JPEG'},
+  {t:'img', src:'Fotos/IMG_9451.JPEG'},
+  {t:'img', src:'Fotos/IMG_4835.JPEG'},
+  {t:'img', src:'Fotos/IMG_9459.JPEG'},
+  {t:'img', src:'Fotos/IMG_6767.JPEG'},
+  {t:'img', src:'Fotos/IMG_3745.JPEG'},
+  {t:'img', src:'Fotos/BBAB7088-2A0A-44F9-92CE-EA278A34ECF3.jpg'},
+  {t:'img', src:'Fotos/540e27ae-f0a5-4816-930b-bfdc9da147ee.JPEG'}
 ];
 
 /* ====================== TESTIMONIALS ====================== */
@@ -1191,14 +1194,14 @@ function renderGallery(){
   grid.innerHTML = GALLERY.map((g,i)=>{
     if(g.t==='video'){
       return `<div class="gallery-item" data-i="${i}">
-        <video muted loop playsinline preload="metadata">
+        <video muted loop playsinline preload="none" loading="lazy">
           <source src="${g.src}" type="video/mp4"/>
         </video>
         <div class="play-icon"></div>
       </div>`;
     }
     return `<div class="gallery-item" data-i="${i}">
-      <img src="${g.src}" alt="Paradisio Terraza" loading="lazy" />
+      <img src="${g.src}" alt="Paradisio Terraza" loading="lazy" decoding="async" />
     </div>`;
   }).join('');
 
