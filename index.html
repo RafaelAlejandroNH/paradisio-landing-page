@@ -104,6 +104,70 @@
   a{color:inherit;text-decoration:none}
   button{font-family:inherit;cursor:pointer;border:none;background:none}
 
+  /* ==================== SPLASH SCREEN ==================== */
+  body.splash-active{overflow:hidden}
+  #splash{
+    position:fixed;inset:0;z-index:9999;
+    background:#1c2118;
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;
+    /* fade-out transition on the overlay bg */
+    transition:opacity 600ms ease;
+  }
+  #splash::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse at 50% 40%, rgba(90,107,72,.14) 0%, transparent 68%);
+    pointer-events:none;
+  }
+  #splashInner{
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    text-align:center;padding:0 6vw;
+    /* will-change for GPU compositing */
+    will-change:transform,opacity;
+    transition:transform 750ms cubic-bezier(.4,0,.15,1), opacity 500ms ease;
+  }
+  .brand-name{
+    font-family:var(--serif);
+    font-size:clamp(68px,13vw,158px);
+    font-weight:400;
+    color:#c2bba8;
+    letter-spacing:3px;
+    line-height:1;
+    margin-bottom:34px;
+    /* entry animation */
+    opacity:0;transform:translateY(18px);
+    animation:brandIn 1s var(--ease) .15s forwards;
+  }
+  .brand-icons-row{
+    display:flex;align-items:center;justify-content:center;
+    gap:22px;margin-bottom:26px;
+    opacity:0;
+    animation:brandIn 1s var(--ease) .4s forwards;
+  }
+  .brand-icon-wrap{
+    color:#9e9887;width:46px;height:50px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .brand-icon-wrap svg{width:100%;height:100%}
+  .brand-icon-sep{
+    width:1px;height:34px;
+    background:rgba(158,152,135,.28);
+  }
+  .brand-tagline{
+    font-size:11px;
+    letter-spacing:11px;
+    color:#9e9887;
+    text-transform:uppercase;
+    font-family:var(--sans);
+    font-weight:400;
+    opacity:0;
+    animation:brandIn 1s var(--ease) .6s forwards;
+  }
+  @keyframes brandIn{
+    to{opacity:1;transform:translateY(0)}
+  }
+
   /* ==================== HEADER ==================== */
   .header{
     position:fixed;top:0;left:0;right:0;z-index:1000;
@@ -121,12 +185,12 @@
   }
   .logo{
     font-family:var(--serif);
-    font-size:26px;font-weight:500;
+    font-size:44px;font-weight:500;
     color:var(--white);letter-spacing:1px;
-    transition:color .4s var(--ease);
+    transition:color .4s var(--ease), font-size .5s var(--ease);
   }
   .logo span{color:var(--gold-soft);font-style:italic}
-  .header.scrolled .logo{color:var(--black)}
+  .header.scrolled .logo{color:var(--black);font-size:32px}
   .nav{display:flex;align-items:center;gap:36px}
   .nav-links{display:flex;gap:32px}
   .nav-links a{
@@ -693,6 +757,51 @@
   </nav>
 </header>
 
+<!-- ============ SPLASH SCREEN ============ -->
+<div id="splash" aria-hidden="true">
+  <div id="splashInner">
+
+    <div class="brand-name">Paradisio</div>
+
+    <div class="brand-icons-row">
+      <!-- Hoja monstera -->
+      <div class="brand-icon-wrap">
+        <svg viewBox="0 0 44 52" fill="none" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 49 C22 49 22 16 22 7 C22 7 8 12 8 24 C8 35 16 45 22 49Z"/>
+          <path d="M22 49 C22 49 22 16 22 7 C22 7 36 12 36 24 C36 35 28 45 22 49Z"/>
+          <line x1="22" y1="7" x2="22" y2="49"/>
+          <path d="M10 20 C14 18 18 19 22 19"/><path d="M34 20 C30 18 26 19 22 19"/>
+          <path d="M9 28 C13 27 18 27 22 27"/><path d="M35 28 C31 27 26 27 22 27"/>
+          <path d="M11 35 C15 34 19 34 22 35"/><path d="M33 35 C29 34 25 34 22 35"/>
+        </svg>
+      </div>
+      <div class="brand-icon-sep"></div>
+      <!-- Fronda de palma -->
+      <div class="brand-icon-wrap">
+        <svg viewBox="0 0 44 52" fill="none" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="50" x2="22" y2="10"/>
+          <path d="M22 14 C18 10 10 8 5 4"/><path d="M22 14 C26 10 34 8 39 4"/>
+          <path d="M22 21 C17 17 9 14 4 10"/><path d="M22 21 C27 17 35 14 40 10"/>
+          <path d="M22 28 C17 24 10 21 5 17"/><path d="M22 28 C27 24 34 21 39 17"/>
+          <path d="M22 35 C18 32 12 30 8 26"/><path d="M22 35 C26 32 32 30 36 26"/>
+        </svg>
+      </div>
+      <div class="brand-icon-sep"></div>
+      <!-- Olas con sol -->
+      <div class="brand-icon-wrap">
+        <svg viewBox="0 0 44 52" fill="none" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="22" cy="10" r="4"/>
+          <path d="M5 26 C8 23 11 29 14 26 C17 23 20 29 23 26 C26 23 29 29 32 26 C35 23 38 29 41 26"/>
+          <path d="M5 34 C8 31 11 37 14 34 C17 31 20 37 23 34 C26 31 29 37 32 34 C35 31 38 37 41 34"/>
+          <path d="M9 42 C11 40 13 44 15 42 C17 40 19 44 21 42 C23 40 25 44 27 42 C29 40 31 44 33 42"/>
+        </svg>
+      </div>
+    </div>
+
+    <p class="brand-tagline">Terraza</p>
+  </div>
+</div>
+
 <!-- ============ HERO ============ -->
 <section class="hero" id="top">
   <div class="hero-bg">
@@ -1233,6 +1342,53 @@ function closeLightbox(){
 document.getElementById('lightboxClose').addEventListener('click',closeLightbox);
 lb.addEventListener('click',e=>{if(e.target===lb)closeLightbox()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox()});
+
+/* ====================== SPLASH EXIT ====================== */
+(function(){
+  const splash   = document.getElementById('splash');
+  const inner    = document.getElementById('splashInner');
+  if(!splash) return;
+
+  // Lock scroll while splash is visible
+  document.body.classList.add('splash-active');
+
+  function exitSplash(){
+    // 1. Calc where the header logo sits so we animate toward it
+    const logo     = document.querySelector('.logo');
+    const logoRect = logo ? logo.getBoundingClientRect() : {top:24, left:40, width:120, height:30};
+    const innerRect = inner.getBoundingClientRect();
+
+    // Target: center of logo element
+    const targetX = (logoRect.left + logoRect.width  / 2) - (innerRect.left + innerRect.width  / 2);
+    const targetY = (logoRect.top  + logoRect.height / 2) - (innerRect.top  + innerRect.height / 2);
+    const scale   = Math.min(logoRect.width / innerRect.width, 0.12);
+
+    // Phase 1 — content flies to header logo position & shrinks (650ms)
+    inner.style.transition = 'transform 650ms cubic-bezier(.4,0,.15,1), opacity 400ms ease 250ms';
+    inner.style.transform  = `translate(${targetX}px, ${targetY}px) scale(${scale})`;
+    inner.style.opacity    = '0';
+
+    // Phase 2 — background fades out (starts 200ms in, 500ms long)
+    setTimeout(()=>{
+      splash.style.opacity = '0';
+    }, 200);
+
+    // Phase 3 — remove splash, unlock scroll
+    setTimeout(()=>{
+      splash.style.display = 'none';
+      document.body.classList.remove('splash-active');
+    }, 850);
+  }
+
+  // Show splash for 1 400ms then exit
+  // Use 'load' so the hero video has had a moment to start buffering
+  const HOLD = 1400;
+  if(document.readyState === 'complete'){
+    setTimeout(exitSplash, HOLD);
+  } else {
+    window.addEventListener('load', ()=> setTimeout(exitSplash, HOLD));
+  }
+})();
 
 /* Header scroll */
 const header=document.getElementById('header');
