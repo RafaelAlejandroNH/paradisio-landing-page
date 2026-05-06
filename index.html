@@ -1513,14 +1513,6 @@ const io=new IntersectionObserver(entries=>{
 },{threshold:.12,rootMargin:'0px 0px -50px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-/* Hero video fallback — oculta el video si autoplay falla en móvil */
-const heroVideo = document.querySelector('.hero-bg video');
-if(heroVideo){
-  heroVideo.play().catch(()=>{
-    heroVideo.style.display = 'none';
-  });
-}
-
 /* Year */
 document.getElementById('year').textContent = new Date().getFullYear();
 
