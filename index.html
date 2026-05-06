@@ -464,8 +464,13 @@
 
   /* ==================== EVENTOS ==================== */
   .events{
-    background:url('Fotos/IMG_5337.JPEG') center/cover fixed;
+    background:url('Fotos/IMG_5337.JPEG') center/cover scroll;
     color:var(--white);text-align:center;position:relative;
+  }
+  @supports (background-attachment:fixed){
+    @media(hover:hover) and (pointer:fine){
+      .events{background-attachment:fixed}
+    }
   }
   .events::before{content:'';position:absolute;inset:0;background:rgba(26,29,23,.65)}
   .events > *{position:relative;z-index:1}
@@ -609,6 +614,35 @@
 
   /* ==================== EXTRAS ==================== */
   .extras{background:var(--sand-2)}
+  /* Sweets card highlight */
+  .sweets-card{border-color:var(--gold);position:relative}
+  .sweets-badge{
+    position:absolute;top:18px;right:18px;
+    font-size:10px;letter-spacing:2px;text-transform:uppercase;
+    color:var(--gold);font-weight:600;
+  }
+  .sweets-icon{background:rgba(184,151,90,.12)}
+  .sweets-contact-label{
+    font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+    color:#7a7d74;margin:20px 0 12px;font-weight:500;
+  }
+  .sweets-links{display:flex;gap:10px;flex-wrap:wrap}
+  .sweets-link{
+    display:inline-flex;align-items:center;gap:7px;
+    padding:9px 16px;border-radius:99px;
+    font-size:12px;font-weight:500;letter-spacing:.5px;
+    transition:all .3s var(--ease);text-decoration:none;
+    border:1px solid;
+  }
+  .sweets-link svg{width:15px;height:15px;flex-shrink:0}
+  .sweets-wa{color:#25d366;border-color:rgba(37,211,102,.3);background:rgba(37,211,102,.06)}
+  .sweets-wa:hover{background:#25d366;color:#fff;border-color:#25d366}
+  .sweets-ig{color:#c13584;border-color:rgba(193,53,132,.3);background:rgba(193,53,132,.06)}
+  .sweets-ig:hover{background:#c13584;color:#fff;border-color:#c13584}
+  .sweets-fb{color:#1877f2;border-color:rgba(24,119,242,.3);background:rgba(24,119,242,.06)}
+  .sweets-fb:hover{background:#1877f2;color:#fff;border-color:#1877f2}
+  .sweets-call{color:var(--olive-deep);border-color:rgba(62,74,50,.3);background:rgba(62,74,50,.06)}
+  .sweets-call:hover{background:var(--olive-deep);color:#fff;border-color:var(--olive-deep)}
   .extras-note{
     text-align:center;font-size:14px;color:#7a7d74;
     max-width:520px;margin:0 auto 60px;letter-spacing:.3px;
@@ -750,10 +784,14 @@
   <a href="#" class="logo">Paradisio<span>·</span></a>
   <nav class="nav">
     <div class="nav-links" id="navLinks">
-      <a href="#experiencia" data-i18n="nav.exp">Experiencia</a>
+      <a href="#top" data-i18n="nav.home">Home</a>
+      <a href="#experiencia" data-i18n="nav.exp">Concepto</a>
       <a href="#galeria" data-i18n="nav.gallery">Galería</a>
       <a href="#incluye" data-i18n="nav.amenities">Incluye</a>
+      <a href="#extras" data-i18n="nav.extras">Opcionales</a>
       <a href="#precios" data-i18n="nav.pricing">Precios</a>
+      <a href="#opiniones" data-i18n="nav.reviews">Reseñas</a>
+      <a href="#eventos" data-i18n="nav.events">Ideal para</a>
       <a href="#ubicacion" data-i18n="nav.location">Ubicación</a>
     </div>
     <div class="lang-switch" role="group" aria-label="Language">
@@ -827,7 +865,7 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         <span data-i18n="cta.whatsapp">Reservar por WhatsApp</span>
       </a>
-      <a href="#galeria" class="btn btn-ghost" data-i18n="cta.discover">Descubrir el espacio</a>
+      <a href="#experiencia" class="btn btn-ghost" data-i18n="cta.discover">Descubrir el espacio</a>
     </div>
   </div>
   <div class="scroll-indicator"><span data-i18n="hero.scroll">Desliza</span></div>
@@ -903,12 +941,40 @@
 <!-- ============ EXTRAS ============ -->
 <section class="extras" id="extras">
   <div class="section-head center reveal">
-    <div class="section-eyebrow" data-i18n="extras.eyebrow">Servicios adicionales</div>
-    <h2 class="section-title" data-i18n-html="extras.title">¿Quieres que lo hagamos <em>todavía más especial</em>?</h2>
-    <p class="section-lead" style="margin:0 auto 16px" data-i18n="extras.lead">No tienes que traer nada ni coordinar a nadie. Dinos qué necesitas y nosotros lo gestionamos.</p>
+    <div class="section-eyebrow" data-i18n="extras.eyebrow">Servicios opcionales</div>
+    <h2 class="section-title" data-i18n-html="extras.title">Tú decides cuánto <em>quieres agregar</em>.</h2>
+    <p class="section-lead" style="margin:0 auto 16px" data-i18n="extras.lead">Estos servicios son completamente opcionales. Puedes contratarlos por tu cuenta o dejarnos organizarlos nosotros — como prefieras.</p>
   </div>
-  <p class="extras-note reveal" data-i18n="extras.note">Todos los servicios se contratan directamente con nosotros. Consúltanos precio y disponibilidad al momento de reservar.</p>
+  <p class="extras-note reveal" data-i18n="extras.note">Sin compromiso. Si te interesa alguno, pregúntanos al momento de reservar y te cotizamos sin costo.</p>
   <div class="extras-grid reveal">
+
+    <div class="extra-card sweets-card">
+      <span class="sweets-badge" data-i18n="extras.sweets.badge">Recomendado</span>
+      <div class="extra-icon sweets-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M20 7H4a1 1 0 00-1 1v2a1 1 0 001 1h16a1 1 0 001-1V8a1 1 0 00-1-1z"/><path d="M19 11v8a1 1 0 01-1 1H6a1 1 0 01-1-1v-8"/><path d="M12 7V4"/><path d="M8 7c0-1.1.9-2 2-2h4a2 2 0 010 4"/><path d="M9 15h6M9 18h4"/></svg>
+      </div>
+      <h3 data-i18n="extras.sweets.t">Pasteles & Repostería</h3>
+      <p data-i18n="extras.sweets.d">Pasteles artesanales, cupcakes, galletas decoradas, pays, brownies y más. Cada pieza elaborada con ingredientes de primera: sabor auténtico, decoración que impresiona y presentación digna de foto. Y lo mejor — a precios que genuinamente te van a sorprender.</p>
+      <p class="sweets-contact-label" data-i18n="extras.sweets.contact">Contáctalos directamente:</p>
+      <div class="sweets-links">
+        <a href="https://wa.me/523312675398" target="_blank" rel="noopener" class="sweets-link sweets-wa" aria-label="WhatsApp Pastelería Erica">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12.05 2C6.495 2 2 6.495 2 12.05c0 1.87.491 3.624 1.348 5.148L2 22l4.956-1.302A10.01 10.01 0 0012.05 22C17.605 22 22 17.505 22 11.95 22 6.495 17.605 2 12.05 2z"/></svg>
+          <span>WhatsApp</span>
+        </a>
+        <a href="https://www.instagram.com/pasteleria.erica/" target="_blank" rel="noopener" class="sweets-link sweets-ig" aria-label="Instagram Pastelería Erica">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          <span>Instagram</span>
+        </a>
+        <a href="https://www.facebook.com/pasteleriaEricapuri" target="_blank" rel="noopener" class="sweets-link sweets-fb" aria-label="Facebook Pastelería Erica">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 22v-9h3l.5-4H13V6.5c0-1.1.3-1.9 2-1.9h2V1.1C16.7 1 15.6.9 14.3.9 11.6.9 9.7 2.6 9.7 5.7V9H7v4h2.7v9H13z"/></svg>
+          <span>Facebook</span>
+        </a>
+        <a href="tel:+523312675398" class="sweets-link sweets-call" aria-label="Llamar Pastelería Erica">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+          <span>Llamar</span>
+        </a>
+      </div>
+    </div>
 
     <div class="extra-card">
       <div class="extra-icon">
@@ -957,7 +1023,7 @@
 </section>
 
 <!-- ============ EVENTOS ============ -->
-<section class="events">
+<section class="events" id="eventos">
   <div class="section-head center reveal">
     <div class="section-eyebrow" style="color:var(--gold-soft)" data-i18n="events.eyebrow">Ideal para</div>
     <h2 class="section-title" data-i18n-html="events.title">Los momentos que <em>merecen</em> un lugar así.</h2>
@@ -965,11 +1031,17 @@
   </div>
   <div class="events-list reveal">
     <span class="event-tag" data-i18n="events.tag1">Cumpleaños</span>
-    <span class="event-tag" data-i18n="events.tag2">Reuniones</span>
+    <span class="event-tag" data-i18n="events.tag2">Convivios</span>
     <span class="event-tag" data-i18n="events.tag3">Aniversarios</span>
-    <span class="event-tag" data-i18n="events.tag4">Escapadas</span>
-    <span class="event-tag" data-i18n="events.tag5">Eventos especiales</span>
-    <span class="event-tag" data-i18n="events.tag6">Sesiones fotográficas</span>
+    <span class="event-tag" data-i18n="events.tag4">Reuniones de amigos</span>
+    <span class="event-tag" data-i18n="events.tag5">Despedidas de soltera</span>
+    <span class="event-tag" data-i18n="events.tag6">Baby shower</span>
+    <span class="event-tag" data-i18n="events.tag7">Graduaciones</span>
+    <span class="event-tag" data-i18n="events.tag8">Escapadas de fin de semana</span>
+    <span class="event-tag" data-i18n="events.tag9">Cenas íntimas</span>
+    <span class="event-tag" data-i18n="events.tag10">Sesiones fotográficas</span>
+    <span class="event-tag" data-i18n="events.tag11">Eventos corporativos</span>
+    <span class="event-tag" data-i18n="events.tag12">Celebraciones familiares</span>
   </div>
 </section>
 
@@ -1068,7 +1140,7 @@
 /* ====================== TRANSLATIONS ====================== */
 const I18N = {
   es: {
-    'nav.exp':'Experiencia','nav.gallery':'Galería','nav.amenities':'Incluye','nav.pricing':'Precios','nav.location':'Ubicación',
+    'nav.home':'Home','nav.exp':'Concepto','nav.gallery':'Galería','nav.amenities':'Incluye','nav.extras':'Opcionales','nav.pricing':'Precios','nav.reviews':'Reseñas','nav.events':'Ideal para','nav.location':'Ubicación',
     'hero.eyebrow':'Terraza Privada · La Purísima, Jalisco',
     'hero.title':'Vive una experiencia <em>privada</em>, diferente y memorable',
     'hero.sub':'Más que una terraza, un espacio diseñado para disfrutar.',
@@ -1092,8 +1164,10 @@ const I18N = {
     'price.note':'Tarifa válida hasta para 50 personas. Para grupos más grandes se aplica un cargo adicional por persona — consúltanos para una cotización personalizada.',
     'events.eyebrow':'Ideal para','events.title':'Los momentos que <em>merecen</em> un lugar así.',
     'events.lead':'Cualquiera que sea la ocasión, Paradisio se adapta para hacerla inolvidable.',
-    'events.tag1':'Cumpleaños','events.tag2':'Reuniones','events.tag3':'Aniversarios',
-    'events.tag4':'Escapadas','events.tag5':'Eventos especiales','events.tag6':'Sesiones fotográficas',
+    'events.tag1':'Cumpleaños','events.tag2':'Convivios','events.tag3':'Aniversarios',
+    'events.tag4':'Reuniones de amigos','events.tag5':'Despedidas de soltera','events.tag6':'Baby shower',
+    'events.tag7':'Graduaciones','events.tag8':'Escapadas de fin de semana','events.tag9':'Cenas íntimas',
+    'events.tag10':'Sesiones fotográficas','events.tag11':'Eventos corporativos','events.tag12':'Celebraciones familiares',
     'loc.eyebrow':'Ubicación','loc.title':'Cerca, pero <em>fuera del mundo</em>.',
     'loc.parking':'Estacionamiento privado disponible','loc.hours':'Horarios flexibles · Día completo',
     'loc.cta':'Ver en Google Maps',
@@ -1114,10 +1188,14 @@ const I18N = {
     'amen.10.t':'Iluminación LED','amen.10.d':'Cálida y ambiental en cada rincón al caer la noche.',
     'gallery.video':'Ver video',
     'statement':'"Más privada que un salón, <em>más especial que una casa</em>"',
-    'extras.eyebrow':'Servicios adicionales',
-    'extras.title':'¿Quieres que lo hagamos <em>todavía más especial</em>?',
-    'extras.lead':'No tienes que traer nada ni coordinar a nadie. Dinos qué necesitas y nosotros lo gestionamos.',
-    'extras.note':'Todos los servicios se contratan directamente con nosotros. Consúltanos precio y disponibilidad al momento de reservar.',
+    'extras.eyebrow':'Servicios opcionales',
+    'extras.title':'Tú decides cuánto <em>quieres agregar</em>.',
+    'extras.lead':'Estos servicios son completamente opcionales. Puedes contratarlos por tu cuenta o dejarnos organizarlos nosotros — como prefieras.',
+    'extras.note':'Sin compromiso. Si te interesa alguno, pregúntanos al momento de reservar y te cotizamos sin costo.',
+    'extras.sweets.badge':'Recomendado',
+    'extras.sweets.t':'Pasteles & Repostería',
+    'extras.sweets.d':'Pasteles artesanales, cupcakes, galletas decoradas, pays, brownies y más. Cada pieza elaborada con ingredientes de primera: sabor auténtico, decoración que impresiona y presentación digna de foto. Y lo mejor — a precios que genuinamente te van a sorprender.',
+    'extras.sweets.contact':'Contáctalos directamente:',
     'extras.deco.t':'Decoración temática',
     'extras.deco.d':'Transformamos el espacio para tu ocasión: globos, flores, centros de mesa, telas y detalles que hacen que el lugar se sienta completamente tuyo.',
     'extras.dj.t':'DJ profesional',
@@ -1131,7 +1209,7 @@ const I18N = {
     'loc.parking':'Zona tranquila, de fácil acceso',
   },
   en: {
-    'nav.exp':'Experience','nav.gallery':'Gallery','nav.amenities':'Includes','nav.pricing':'Pricing','nav.location':'Location',
+    'nav.home':'Home','nav.exp':'Concept','nav.gallery':'Gallery','nav.amenities':'Includes','nav.extras':'Optionals','nav.pricing':'Pricing','nav.reviews':'Reviews','nav.events':'Ideal for','nav.location':'Location',
     'hero.eyebrow':'Private Terrace · La Purísima, Jalisco',
     'hero.title':'Live a <em>private</em>, distinctive and unforgettable experience',
     'hero.sub':'More than a terrace — a space designed to be enjoyed.',
@@ -1155,8 +1233,10 @@ const I18N = {
     'price.note':'Rate valid for up to 50 guests. Larger groups have a small per-person charge — reach out for a tailored quote.',
     'events.eyebrow':'Perfect for','events.title':'The moments that <em>deserve</em> a place like this.',
     'events.lead':'Whatever the occasion, Paradisio adapts to make it unforgettable.',
-    'events.tag1':'Birthdays','events.tag2':'Gatherings','events.tag3':'Anniversaries',
-    'events.tag4':'Getaways','events.tag5':'Special events','events.tag6':'Photo shoots',
+    'events.tag1':'Birthdays','events.tag2':'Get-togethers','events.tag3':'Anniversaries',
+    'events.tag4':'Friends reunions','events.tag5':'Bachelorette parties','events.tag6':'Baby showers',
+    'events.tag7':'Graduations','events.tag8':'Weekend getaways','events.tag9':'Intimate dinners',
+    'events.tag10':'Photo shoots','events.tag11':'Corporate events','events.tag12':'Family celebrations',
     'loc.eyebrow':'Location','loc.title':'Close by, but <em>out of this world</em>.',
     'loc.parking':'Quiet area, easily accessible.','loc.hours':'Flexible hours · Full day',
     'loc.parking':'Quiet area, easily accessible.','loc.hours':'Flexible hours · Full day',
@@ -1178,10 +1258,14 @@ const I18N = {
     'amen.10.t':'LED lighting','amen.10.d':'Warm and ambient throughout the entire space at night.',
     'gallery.video':'Watch video',
     'statement':'"More private than a venue, <em>more special than a home</em>"',
-    'extras.eyebrow':'Add-on services',
-    'extras.title':'Want to make it <em>even more special</em>?',
-    'extras.lead':'No need to bring anything or coordinate anyone. Tell us what you need and we handle it.',
-    'extras.note':'All services are booked directly with us. Ask about pricing and availability when you reserve.',
+    'extras.eyebrow':'Optional services',
+    'extras.title':'You decide how much <em>you want to add</em>.',
+    'extras.lead':'These are fully optional. You can arrange them yourself or let us handle it — whatever works best for you.',
+    'extras.note':'No commitment. If any interest you, just ask when booking and we\'ll send a quote at no charge.',
+    'extras.sweets.badge':'Featured',
+    'extras.sweets.t':'Cakes & Pastries',
+    'extras.sweets.d':'Artisan cakes, cupcakes, decorated cookies, pies, brownies and more. Every piece made with top-quality ingredients — genuine flavor, stunning decoration and presentation worthy of a photo. And the best part: prices that will genuinely surprise you.',
+    'extras.sweets.contact':'Contact them directly:',
     'extras.deco.t':'Themed decoration',
     'extras.deco.d':'We transform the space for your occasion: balloons, flowers, centerpieces, fabrics and details that make the place feel entirely yours.',
     'extras.dj.t':'Professional DJ',
