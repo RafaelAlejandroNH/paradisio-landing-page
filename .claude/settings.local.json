@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "PowerShell(Get-Command ffmpeg -ErrorAction SilentlyContinue)"
+      "PowerShell(Get-Command ffmpeg -ErrorAction SilentlyContinue)",
+      "Bash(mv \"IMG_3742.MP4\"                                          \"video_1.mp4\")",
+      "Bash(mv \"copy_BEE2D7FC-1ED7-40C1-8FF9-CCDFD5A54206.MP4\"       \"video_2.mp4\")",
+      "Bash(mv \"copy_D41D69FE-74AF-4136-BB74-25CAA81BAAAD.MP4\"       \"video_3.mp4\")",
+      "Bash(mv \"65B13C12-E72F-4F72-95D2-0C1C21406D34.JPEG\"  \"foto_1.jpeg\")",
+      "Bash(mv \"IMG_0765.JPEG\"   \"foto_2.jpeg\")"
     ]
   }
 }
