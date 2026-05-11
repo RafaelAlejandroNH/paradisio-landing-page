@@ -15,18 +15,19 @@
 </head>
 <body>
 
-<!-- Audio opcional -->
-<button class="music-toggle" id="musicToggle" aria-label="Música">
+<!-- Botón de música -->
+<button class="music-toggle" id="musicToggle" aria-label="Reproducir música">
   <span class="music-icon" id="musicIcon">♪</span>
 </button>
 <audio id="bgMusic" loop preload="none">
+  <source src="https://assets.mixkit.co/music/preview/mixkit-romantic-piano-105.mp3" type="audio/mpeg">
   <source src="https://cdn.pixabay.com/audio/2022/10/30/audio_347111d654.mp3" type="audio/mpeg">
 </audio>
 
 <!-- Grain overlay -->
 <div class="grain" aria-hidden="true"></div>
 
-<!-- HERO -->
+<!-- ===================== HERO ===================== -->
 <section class="sheet hero" id="hero">
   <div class="paper">
     <div class="ornament-top">
@@ -37,6 +38,40 @@
 
     <p class="overline reveal">Nuestra Boda</p>
 
+    <!-- Botanical wreath illustration -->
+    <svg class="botanical-wreath reveal" viewBox="0 0 300 85" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- LEFT STEM -->
+      <path d="M5,80 C25,62 52,38 85,16 C96,9 110,5 122,4" stroke="#b8924f" stroke-width="1" stroke-linecap="round"/>
+      <!-- L leaf 1 -->
+      <path d="M32,66 C25,56 31,46 40,49 C45,53 40,66 32,66Z" stroke="#b8924f" stroke-width="0.75" fill="rgba(184,146,79,0.07)"/>
+      <!-- L leaf 2 -->
+      <path d="M58,44 C51,35 57,26 66,29 C71,33 66,45 58,44Z" stroke="#b8924f" stroke-width="0.75" fill="rgba(184,146,79,0.07)"/>
+      <!-- L leaf 3 -->
+      <path d="M82,22 C76,14 82,6 90,9 C94,13 90,24 82,22Z" stroke="#b8924f" stroke-width="0.75" fill="rgba(184,146,79,0.07)"/>
+      <!-- L rose bud -->
+      <circle cx="122" cy="4" r="7" stroke="#b8924f" stroke-width="0.85" fill="rgba(184,146,79,0.1)"/>
+      <path d="M115,4 Q122,-3 129,4" stroke="#b8924f" stroke-width="0.7" fill="none"/>
+      <path d="M117,7 Q122,1 127,7" stroke="#b8924f" stroke-width="0.6" fill="none"/>
+      <!-- CENTER DIAMOND -->
+      <path d="M140,4 L147,4" stroke="#b8924f" stroke-width="0.6"/>
+      <path d="M150,0 L154,4 L150,8 L146,4 Z" stroke="#b8924f" stroke-width="0.7" fill="rgba(184,146,79,0.22)"/>
+      <path d="M153,4 L160,4" stroke="#b8924f" stroke-width="0.6"/>
+      <circle cx="138" cy="4" r="1.5" fill="#b8924f"/>
+      <circle cx="162" cy="4" r="1.5" fill="#b8924f"/>
+      <!-- RIGHT STEM (mirrored) -->
+      <path d="M295,80 C275,62 248,38 215,16 C204,9 190,5 178,4" stroke="#b8924f" stroke-width="1" stroke-linecap="round"/>
+      <!-- R leaf 1 -->
+      <path d="M268,66 C275,56 269,46 260,49 C255,53 260,66 268,66Z" stroke="#b8924f" stroke-width="0.75" fill="rgba(184,146,79,0.07)"/>
+      <!-- R leaf 2 -->
+      <path d="M242,44 C249,35 243,26 234,29 C229,33 234,45 242,44Z" stroke="#b8924f" stroke-width="0.75" fill="rgba(184,146,79,0.07)"/>
+      <!-- R leaf 3 -->
+      <path d="M218,22 C224,14 218,6 210,9 C206,13 210,24 218,22Z" stroke="#b8924f" stroke-width="0.75" fill="rgba(184,146,79,0.07)"/>
+      <!-- R rose bud -->
+      <circle cx="178" cy="4" r="7" stroke="#b8924f" stroke-width="0.85" fill="rgba(184,146,79,0.1)"/>
+      <path d="M171,4 Q178,-3 185,4" stroke="#b8924f" stroke-width="0.7" fill="none"/>
+      <path d="M173,7 Q178,1 183,7" stroke="#b8924f" stroke-width="0.6" fill="none"/>
+    </svg>
+
     <h1 class="couple reveal">
       <span class="name">Michelle</span>
       <span class="amp">&</span>
@@ -44,6 +79,11 @@
     </h1>
 
     <p class="subtitle reveal">Boda Civil &middot; Revelación de Sexo</p>
+
+    <p class="love-phrase reveal">
+      El amor nos unió…<br/>
+      <em>y ahora una nueva vida está por comenzar.</em>
+    </p>
 
     <div class="date-block reveal">
       <span class="date-piece">23</span>
@@ -55,7 +95,9 @@
     </div>
 
     <p class="hero-quote reveal">
-      “Queremos compartir contigo<br/>este momento tan especial”
+      "Hay momentos en la vida que merecen<br/>
+      ser compartidos con las personas más importantes.<br/><br/>
+      <em>Y este es uno de ellos.</em>"
     </p>
 
     <div class="guest-card reveal" id="guestCard">
@@ -76,24 +118,74 @@
   </div>
 </section>
 
-<!-- COUNTDOWN -->
+<!-- ── SEPARADOR ── -->
+<div class="section-break">
+  <svg viewBox="0 0 280 50" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M0,25 L95,25" stroke="#c8a868" stroke-width="0.6"/>
+    <path d="M185,25 L280,25" stroke="#c8a868" stroke-width="0.6"/>
+    <circle cx="140" cy="25" r="9" stroke="#b8924f" stroke-width="0.85" fill="rgba(184,146,79,0.08)"/>
+    <path d="M131,25 Q140,17 149,25" stroke="#b8924f" stroke-width="0.7" fill="none"/>
+    <path d="M133,28 Q140,21 147,28" stroke="#b8924f" stroke-width="0.6" fill="none"/>
+    <path d="M118,26 C112,18 117,10 124,13 C127,18 123,28 118,26Z" stroke="#b8924f" stroke-width="0.65" fill="rgba(184,146,79,0.07)"/>
+    <path d="M162,26 C168,18 163,10 156,13 C153,18 157,28 162,26Z" stroke="#b8924f" stroke-width="0.65" fill="rgba(184,146,79,0.07)"/>
+    <path d="M118,19 L131,23" stroke="#b8924f" stroke-width="0.5"/>
+    <path d="M162,19 L149,23" stroke="#b8924f" stroke-width="0.5"/>
+    <circle cx="72" cy="25" r="2" fill="rgba(184,146,79,0.4)"/>
+    <circle cx="208" cy="25" r="2" fill="rgba(184,146,79,0.4)"/>
+    <circle cx="48" cy="25" r="1.2" fill="rgba(184,146,79,0.28)"/>
+    <circle cx="232" cy="25" r="1.2" fill="rgba(184,146,79,0.28)"/>
+  </svg>
+</div>
+
+<!-- ===================== COUNTDOWN ===================== -->
 <section class="sheet countdown-section">
   <div class="paper soft">
     <p class="overline reveal">Faltan</p>
     <div class="countdown reveal" id="countdown">
-      <div class="cd-unit"><span class="cd-num" id="cdDays">00</span><span class="cd-lbl">Días</span></div>
+      <div class="cd-unit">
+        <span class="cd-num" id="cdDays">00</span>
+        <span class="cd-lbl">Días</span>
+      </div>
       <span class="cd-sep">·</span>
-      <div class="cd-unit"><span class="cd-num" id="cdHours">00</span><span class="cd-lbl">Horas</span></div>
+      <div class="cd-unit">
+        <span class="cd-num" id="cdHours">00</span>
+        <span class="cd-lbl">Horas</span>
+      </div>
       <span class="cd-sep">·</span>
-      <div class="cd-unit"><span class="cd-num" id="cdMins">00</span><span class="cd-lbl">Min</span></div>
+      <div class="cd-unit">
+        <span class="cd-num" id="cdMins">00</span>
+        <span class="cd-lbl">Min</span>
+      </div>
       <span class="cd-sep">·</span>
-      <div class="cd-unit"><span class="cd-num" id="cdSecs">00</span><span class="cd-lbl">Seg</span></div>
+      <div class="cd-unit">
+        <span class="cd-num" id="cdSecs">00</span>
+        <span class="cd-lbl">Seg</span>
+      </div>
     </div>
     <p class="muted reveal">para celebrar juntos</p>
   </div>
 </section>
 
-<!-- CEREMONIA -->
+<!-- ── SEPARADOR ── -->
+<div class="section-break">
+  <svg viewBox="0 0 280 50" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M0,25 L95,25" stroke="#c8a868" stroke-width="0.6"/>
+    <path d="M185,25 L280,25" stroke="#c8a868" stroke-width="0.6"/>
+    <circle cx="140" cy="25" r="9" stroke="#b8924f" stroke-width="0.85" fill="rgba(184,146,79,0.08)"/>
+    <path d="M131,25 Q140,17 149,25" stroke="#b8924f" stroke-width="0.7" fill="none"/>
+    <path d="M133,28 Q140,21 147,28" stroke="#b8924f" stroke-width="0.6" fill="none"/>
+    <path d="M118,26 C112,18 117,10 124,13 C127,18 123,28 118,26Z" stroke="#b8924f" stroke-width="0.65" fill="rgba(184,146,79,0.07)"/>
+    <path d="M162,26 C168,18 163,10 156,13 C153,18 157,28 162,26Z" stroke="#b8924f" stroke-width="0.65" fill="rgba(184,146,79,0.07)"/>
+    <path d="M118,19 L131,23" stroke="#b8924f" stroke-width="0.5"/>
+    <path d="M162,19 L149,23" stroke="#b8924f" stroke-width="0.5"/>
+    <circle cx="72" cy="25" r="2" fill="rgba(184,146,79,0.4)"/>
+    <circle cx="208" cy="25" r="2" fill="rgba(184,146,79,0.4)"/>
+    <circle cx="48" cy="25" r="1.2" fill="rgba(184,146,79,0.28)"/>
+    <circle cx="232" cy="25" r="1.2" fill="rgba(184,146,79,0.28)"/>
+  </svg>
+</div>
+
+<!-- ===================== CEREMONIA ===================== -->
 <section class="sheet ceremony">
   <div class="paper">
     <p class="overline reveal">La Ceremonia</p>
@@ -121,7 +213,26 @@
   </div>
 </section>
 
-<!-- REVELACION -->
+<!-- ── SEPARADOR ── -->
+<div class="section-break">
+  <svg viewBox="0 0 280 50" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M0,25 L95,25" stroke="#c8a868" stroke-width="0.6"/>
+    <path d="M185,25 L280,25" stroke="#c8a868" stroke-width="0.6"/>
+    <circle cx="140" cy="25" r="9" stroke="#b8924f" stroke-width="0.85" fill="rgba(184,146,79,0.08)"/>
+    <path d="M131,25 Q140,17 149,25" stroke="#b8924f" stroke-width="0.7" fill="none"/>
+    <path d="M133,28 Q140,21 147,28" stroke="#b8924f" stroke-width="0.6" fill="none"/>
+    <path d="M118,26 C112,18 117,10 124,13 C127,18 123,28 118,26Z" stroke="#b8924f" stroke-width="0.65" fill="rgba(184,146,79,0.07)"/>
+    <path d="M162,26 C168,18 163,10 156,13 C153,18 157,28 162,26Z" stroke="#b8924f" stroke-width="0.65" fill="rgba(184,146,79,0.07)"/>
+    <path d="M118,19 L131,23" stroke="#b8924f" stroke-width="0.5"/>
+    <path d="M162,19 L149,23" stroke="#b8924f" stroke-width="0.5"/>
+    <circle cx="72" cy="25" r="2" fill="rgba(184,146,79,0.4)"/>
+    <circle cx="208" cy="25" r="2" fill="rgba(184,146,79,0.4)"/>
+    <circle cx="48" cy="25" r="1.2" fill="rgba(184,146,79,0.28)"/>
+    <circle cx="232" cy="25" r="1.2" fill="rgba(184,146,79,0.28)"/>
+  </svg>
+</div>
+
+<!-- ===================== REVELACION ===================== -->
 <section class="sheet reveal-section">
   <div class="paper">
     <p class="overline reveal">Sorpresa</p>
@@ -160,7 +271,26 @@
   </div>
 </section>
 
-<!-- FINAL -->
+<!-- ── SEPARADOR ── -->
+<div class="section-break">
+  <svg viewBox="0 0 280 50" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M0,25 L95,25" stroke="#c8a868" stroke-width="0.6"/>
+    <path d="M185,25 L280,25" stroke="#c8a868" stroke-width="0.6"/>
+    <circle cx="140" cy="25" r="9" stroke="#b8924f" stroke-width="0.85" fill="rgba(184,146,79,0.08)"/>
+    <path d="M131,25 Q140,17 149,25" stroke="#b8924f" stroke-width="0.7" fill="none"/>
+    <path d="M133,28 Q140,21 147,28" stroke="#b8924f" stroke-width="0.6" fill="none"/>
+    <path d="M118,26 C112,18 117,10 124,13 C127,18 123,28 118,26Z" stroke="#b8924f" stroke-width="0.65" fill="rgba(184,146,79,0.07)"/>
+    <path d="M162,26 C168,18 163,10 156,13 C153,18 157,28 162,26Z" stroke="#b8924f" stroke-width="0.65" fill="rgba(184,146,79,0.07)"/>
+    <path d="M118,19 L131,23" stroke="#b8924f" stroke-width="0.5"/>
+    <path d="M162,19 L149,23" stroke="#b8924f" stroke-width="0.5"/>
+    <circle cx="72" cy="25" r="2" fill="rgba(184,146,79,0.4)"/>
+    <circle cx="208" cy="25" r="2" fill="rgba(184,146,79,0.4)"/>
+    <circle cx="48" cy="25" r="1.2" fill="rgba(184,146,79,0.28)"/>
+    <circle cx="232" cy="25" r="1.2" fill="rgba(184,146,79,0.28)"/>
+  </svg>
+</div>
+
+<!-- ===================== FINAL ===================== -->
 <section class="sheet final">
   <div class="paper">
     <div class="ornament-top reveal">
@@ -196,7 +326,7 @@
   </div>
 </section>
 
-<!-- FOOTER PARADISIO -->
+<!-- ===================== FOOTER PARADISIO ===================== -->
 <footer class="paradisio-footer">
   <div class="paradisio-footer-inner">
     <p class="paradisio-hosted">Celebrado en</p>

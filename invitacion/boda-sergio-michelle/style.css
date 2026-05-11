@@ -307,24 +307,24 @@ body::before {
 }
 .cd-num {
   font-family: var(--display);
-  font-size: clamp(42px, 7vw, 62px);
+  font-size: clamp(56px, 10vw, 88px);
   color: var(--ink);
   line-height: 1;
 }
 .cd-lbl {
   font-family: var(--sans);
   font-size: 12px;
-  letter-spacing: 0.4em;
+  letter-spacing: 0.45em;
   text-transform: uppercase;
   color: var(--coffee);
-  margin-top: 8px;
+  margin-top: 10px;
 }
 .cd-sep {
   font-family: var(--display);
   color: var(--gold);
-  font-size: clamp(30px, 5vw, 44px);
+  font-size: clamp(40px, 7vw, 60px);
   align-self: flex-start;
-  margin-top: 4px;
+  margin-top: 8px;
 }
 .muted {
   font-family: var(--serif);
@@ -666,6 +666,73 @@ body::before {
 @keyframes spin {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
+}
+
+/* ============================================
+   BOTANICAL WREATH (hero)
+   ============================================ */
+.botanical-wreath {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto 10px;
+  overflow: visible;
+  opacity: 0.9;
+}
+
+/* ============================================
+   LOVE PHRASE
+   ============================================ */
+.love-phrase {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(17px, 2.4vw, 21px);
+  color: var(--ink-soft);
+  line-height: 1.8;
+  margin: 22px auto 10px;
+  max-width: 400px;
+  letter-spacing: 0.02em;
+}
+.love-phrase em {
+  font-style: italic;
+  color: var(--gold);
+  display: block;
+  margin-top: 4px;
+}
+
+/* ============================================
+   HERO QUOTE  (em override)
+   ============================================ */
+.hero-quote em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+/* ============================================
+   SECTION BREAK (separadores florales)
+   ============================================ */
+.section-break {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 5vw;
+  background: transparent;
+}
+.section-break svg {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  opacity: 0;
+  transform: scaleX(0.7);
+  transition:
+    opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.section-break svg.in {
+  opacity: 1;
+  transform: scaleX(1);
 }
 
 /* ============================================

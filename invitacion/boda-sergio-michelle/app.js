@@ -58,14 +58,12 @@
 
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
-      entries.forEach((entry, i) => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          // pequeño stagger por hijo
           const parent = entry.target.parentElement;
           const siblings = parent ? Array.from(parent.querySelectorAll(':scope > .reveal')) : [];
           const idx = siblings.indexOf(entry.target);
           const delay = idx >= 0 ? Math.min(idx * 90, 700) : 0;
-
           setTimeout(() => entry.target.classList.add('in'), delay);
           io.unobserve(entry.target);
         }
@@ -73,8 +71,22 @@
     }, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
 
     revealEls.forEach(el => io.observe(el));
+
+    // Animación de los separadores florales
+    const breakSvgs = document.querySelectorAll('.section-break svg');
+    const ioBreak = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          ioBreak.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    breakSvgs.forEach(el => ioBreak.observe(el));
+
   } else {
     revealEls.forEach(el => el.classList.add('in'));
+    document.querySelectorAll('.section-break svg').forEach(el => el.classList.add('in'));
   }
 
   /* --------- Music Toggle --------- */
