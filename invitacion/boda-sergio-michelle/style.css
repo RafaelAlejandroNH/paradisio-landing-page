@@ -1,0 +1,616 @@
+/* ============================================
+   MICHELLE & SERGIO · INVITACIÓN PREMIUM
+   Estética: papel artesanal · editorial wedding
+   ============================================ */
+
+:root {
+  --cream:        #f5ecdc;
+  --cream-deep:   #ede1cc;
+  --ivory:        #fbf6ec;
+  --beige:        #e6d6b8;
+  --champagne:    #d4b483;
+  --gold:         #b8924f;
+  --gold-soft:    #c8a868;
+  --coffee:       #8a6a44;
+  --ink:          #4a3a2a;
+  --ink-soft:     #6b5640;
+
+  --serif: 'Cormorant Garamond', 'Times New Roman', serif;
+  --display: 'Italiana', serif;
+  --sans: 'Inter', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  background: var(--cream);
+  line-height: 1.6;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================
+   PAPEL TEXTURIZADO
+   ============================================ */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at top left, rgba(212,180,131,0.08), transparent 60%),
+    radial-gradient(ellipse at bottom right, rgba(138,106,68,0.06), transparent 60%);
+  z-index: 1;
+}
+
+/* Grain cinematográfico sutil */
+.grain {
+  position: fixed;
+  inset: -10%;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.45 0 0 0 0 0.30 0 0 0 0.18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 220px 220px;
+  animation: grainShift 9s steps(6) infinite;
+}
+@keyframes grainShift {
+  0%   { transform: translate(0,0); }
+  20%  { transform: translate(-3%, 2%); }
+  40%  { transform: translate(2%, -1%); }
+  60%  { transform: translate(-1%, 3%); }
+  80%  { transform: translate(3%, 1%); }
+  100% { transform: translate(0,0); }
+}
+
+/* ============================================
+   HOJAS DE PAPEL
+   ============================================ */
+.sheet {
+  position: relative;
+  z-index: 3;
+  min-height: 100vh;
+  padding: 7vh 5vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.paper {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  padding: 70px 50px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.35), rgba(255,255,255,0) 60%),
+    linear-gradient(180deg, var(--ivory), var(--cream));
+  border: 1px solid rgba(184,146,79,0.18);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.6) inset,
+    0 30px 60px -30px rgba(74,58,42,0.22),
+    0 10px 30px -15px rgba(74,58,42,0.15);
+  text-align: center;
+  overflow: hidden;
+}
+
+.paper::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border: 1px solid rgba(184,146,79,0.22);
+  pointer-events: none;
+}
+
+.paper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(212,180,131,0.15), transparent 35%),
+    radial-gradient(circle at 85% 90%, rgba(138,106,68,0.10), transparent 40%);
+}
+
+.paper.soft {
+  background: linear-gradient(180deg, var(--cream), var(--cream-deep));
+}
+
+/* ============================================
+   ORNAMENTOS
+   ============================================ */
+.ornament-top, .ornament-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 0 auto 28px;
+  max-width: 280px;
+}
+.ornament-bottom { margin: 36px auto 8px; }
+
+.ornament-top .line,
+.ornament-bottom .line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-soft), transparent);
+}
+
+.ornament-top .dot,
+.ornament-bottom .dot {
+  width: 6px; height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+}
+
+.ornament-top .diamond,
+.ornament-bottom .diamond {
+  color: var(--gold);
+  font-size: 10px;
+  letter-spacing: 0;
+}
+
+/* ============================================
+   TIPOGRAFÍA
+   ============================================ */
+.overline {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 30px;
+}
+
+.couple {
+  font-family: var(--display);
+  font-weight: 400;
+  color: var(--ink);
+  font-size: clamp(46px, 9vw, 88px);
+  line-height: 1;
+  margin: 20px 0 26px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.couple .name {
+  display: block;
+  font-style: normal;
+}
+.couple .amp {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--gold);
+  font-size: 0.55em;
+  margin: 4px 0;
+}
+
+.subtitle {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(15px, 2.2vw, 18px);
+  color: var(--ink-soft);
+  letter-spacing: 0.08em;
+  margin-bottom: 40px;
+}
+
+.date-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  margin: 30px 0 36px;
+}
+.date-block .date-piece {
+  font-family: var(--display);
+  font-size: clamp(40px, 7vw, 64px);
+  color: var(--ink);
+  line-height: 1;
+}
+.date-block .date-piece:last-child { visibility: hidden; opacity: 0; width: 0; }
+.date-block .date-mid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 22px;
+  border-left: 1px solid var(--gold-soft);
+  border-right: 1px solid var(--gold-soft);
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--coffee);
+}
+
+.hero-quote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(16px, 2.4vw, 20px);
+  color: var(--ink-soft);
+  line-height: 1.7;
+  margin: 30px auto 20px;
+  max-width: 420px;
+}
+
+.guest-card {
+  margin: 30px auto 10px;
+  padding: 18px 24px;
+  border: 1px solid rgba(184,146,79,0.3);
+  background: rgba(255,255,255,0.4);
+  max-width: 380px;
+}
+.guest-label {
+  display: block;
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.guest-name {
+  display: block;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(18px, 3vw, 22px);
+  color: var(--ink);
+}
+
+.scroll-hint {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--coffee);
+}
+.scroll-arrow {
+  font-size: 22px;
+  color: var(--gold);
+  animation: bounceArrow 2.4s ease-in-out infinite;
+}
+@keyframes bounceArrow {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50%      { transform: translateY(6px); opacity: 1; }
+}
+
+/* ============================================
+   COUNTDOWN
+   ============================================ */
+.countdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 24px 0;
+  flex-wrap: wrap;
+}
+.cd-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60px;
+}
+.cd-num {
+  font-family: var(--display);
+  font-size: clamp(34px, 6vw, 52px);
+  color: var(--ink);
+  line-height: 1;
+}
+.cd-lbl {
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--coffee);
+  margin-top: 8px;
+}
+.cd-sep {
+  font-family: var(--display);
+  color: var(--gold);
+  font-size: clamp(24px, 4vw, 36px);
+  align-self: flex-start;
+  margin-top: 4px;
+}
+.muted {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--ink-soft);
+  margin-top: 14px;
+  font-size: 15px;
+}
+
+/* ============================================
+   SERIF TITLE / DIVIDER
+   ============================================ */
+.serif-title {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(34px, 6vw, 54px);
+  color: var(--ink);
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  max-width: 220px;
+  margin: 22px auto 36px;
+}
+.divider span {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-soft), transparent);
+}
+.divider i {
+  color: var(--gold);
+  font-style: normal;
+  font-size: 12px;
+}
+
+/* ============================================
+   INFO ROWS
+   ============================================ */
+.info-row {
+  margin: 22px 0;
+}
+.info-label {
+  display: block;
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+.info-value {
+  display: block;
+  font-family: var(--serif);
+  font-size: clamp(17px, 2.4vw, 21px);
+  color: var(--ink);
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+/* ============================================
+   BOTONES ELEGANTES
+   ============================================ */
+.btn-elegant {
+  display: inline-block;
+  margin-top: 30px;
+  padding: 16px 38px;
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid var(--gold);
+  position: relative;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+.btn-elegant::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+}
+.btn-elegant:hover {
+  color: var(--ivory);
+}
+.btn-elegant:hover::before {
+  transform: scaleX(1);
+}
+.btn-elegant.primary {
+  background: var(--ink);
+  color: var(--ivory);
+  border-color: var(--ink);
+}
+.btn-elegant.primary::before { background: var(--gold); }
+
+/* ============================================
+   REVELACIÓN
+   ============================================ */
+.poetic {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(16px, 2.4vw, 20px);
+  color: var(--ink-soft);
+  line-height: 1.85;
+  margin: 24px auto;
+  max-width: 460px;
+}
+.poetic.small {
+  font-size: clamp(14px, 2vw, 17px);
+}
+
+.big-question {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(40px, 7vw, 64px);
+  color: var(--ink);
+  line-height: 1.1;
+  margin: 36px 0;
+}
+.big-question em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.5em;
+  color: var(--gold);
+  display: inline-block;
+  margin: 6px 0;
+}
+
+.colors {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  margin: 36px auto 10px;
+  flex-wrap: wrap;
+}
+.color-card {
+  flex: 1;
+  min-width: 140px;
+  max-width: 200px;
+  padding: 26px 18px;
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(184,146,79,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  transition: transform 0.6s ease, box-shadow 0.6s ease;
+}
+.color-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px -20px rgba(74,58,42,0.3);
+}
+.swatch {
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  border: 1px solid rgba(184,146,79,0.4);
+  box-shadow: inset 0 4px 12px rgba(255,255,255,0.6);
+}
+.color-card.blue .swatch  { background: #b9c9d9; }
+.color-card.pink .swatch  { background: #e6c3c8; }
+.c-title {
+  font-family: var(--display);
+  font-size: 22px;
+  color: var(--ink);
+  margin-top: 6px;
+}
+.c-sub {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+/* ============================================
+   FINAL
+   ============================================ */
+.closing {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(26px, 4.5vw, 38px);
+  color: var(--ink);
+  margin: 30px 0 14px;
+  line-height: 1.2;
+}
+.signature {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(18px, 2.6vw, 22px);
+  color: var(--coffee);
+  margin: 10px 0 30px;
+  letter-spacing: 0.05em;
+}
+.signature span {
+  color: var(--gold);
+  font-style: normal;
+  margin: 0 6px;
+}
+.footnote {
+  margin-top: 20px;
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* ============================================
+   MÚSICA TOGGLE
+   ============================================ */
+.music-toggle {
+  position: fixed;
+  top: 22px;
+  right: 22px;
+  z-index: 50;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: rgba(251,246,236,0.85);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(184,146,79,0.4);
+  color: var(--gold);
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  box-shadow: 0 6px 20px -10px rgba(74,58,42,0.3);
+}
+.music-toggle:hover {
+  background: var(--ivory);
+  transform: scale(1.05);
+}
+.music-toggle.playing .music-icon {
+  animation: spin 6s linear infinite;
+  color: var(--ink);
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ============================================
+   REVEAL ANIMATIONS
+   ============================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 640px) {
+  .sheet { padding: 6vh 4vw; }
+  .paper { padding: 50px 28px; }
+  .paper::before { inset: 10px; }
+
+  .date-block { gap: 14px; }
+  .date-block .date-mid { padding: 0 14px; }
+
+  .colors { gap: 16px; }
+  .color-card { min-width: 130px; padding: 22px 14px; }
+
+  .countdown { gap: 8px; }
+  .cd-unit { min-width: 50px; }
+  .cd-sep { display: none; }
+}
+
+@media (max-width: 380px) {
+  .paper { padding: 40px 20px; }
+  .ornament-top, .ornament-bottom { max-width: 220px; }
+}

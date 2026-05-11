@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#f5ecdc" />
+<title>Michelle & Sergio · Nuestra Boda · 23 de Mayo, 2026</title>
+<meta name="description" content="Invitación a la boda civil y revelación de sexo de Michelle y Sergio. 23 de Mayo de 2026, Paradisio Terraza." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Italiana&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- Audio opcional -->
+<button class="music-toggle" id="musicToggle" aria-label="Música">
+  <span class="music-icon" id="musicIcon">♪</span>
+</button>
+<audio id="bgMusic" loop preload="none">
+  <source src="https://cdn.pixabay.com/audio/2022/10/30/audio_347111d654.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Grain overlay -->
+<div class="grain" aria-hidden="true"></div>
+
+<!-- HERO -->
+<section class="sheet hero" id="hero">
+  <div class="paper">
+    <div class="ornament-top">
+      <span class="line"></span>
+      <span class="dot"></span>
+      <span class="line"></span>
+    </div>
+
+    <p class="overline reveal">Nuestra Boda</p>
+
+    <h1 class="couple reveal">
+      <span class="name">Michelle</span>
+      <span class="amp">&</span>
+      <span class="name">Sergio</span>
+    </h1>
+
+    <p class="subtitle reveal">Boda Civil &middot; Revelación de Sexo</p>
+
+    <div class="date-block reveal">
+      <span class="date-piece">23</span>
+      <div class="date-mid">
+        <span>Mayo</span>
+        <span>2026</span>
+      </div>
+      <span class="date-piece">23</span>
+    </div>
+
+    <p class="hero-quote reveal">
+      “Queremos compartir contigo<br/>este momento tan especial”
+    </p>
+
+    <div class="guest-card reveal" id="guestCard">
+      <span class="guest-label">Invitación especial para</span>
+      <span class="guest-name" id="guestName">nuestros invitados</span>
+    </div>
+
+    <div class="ornament-bottom reveal">
+      <span class="line"></span>
+      <span class="diamond">◆</span>
+      <span class="line"></span>
+    </div>
+
+    <div class="scroll-hint reveal">
+      <span>desliza</span>
+      <span class="scroll-arrow">⌄</span>
+    </div>
+  </div>
+</section>
+
+<!-- COUNTDOWN -->
+<section class="sheet countdown-section">
+  <div class="paper soft">
+    <p class="overline reveal">Faltan</p>
+    <div class="countdown reveal" id="countdown">
+      <div class="cd-unit"><span class="cd-num" id="cdDays">00</span><span class="cd-lbl">Días</span></div>
+      <span class="cd-sep">·</span>
+      <div class="cd-unit"><span class="cd-num" id="cdHours">00</span><span class="cd-lbl">Horas</span></div>
+      <span class="cd-sep">·</span>
+      <div class="cd-unit"><span class="cd-num" id="cdMins">00</span><span class="cd-lbl">Min</span></div>
+      <span class="cd-sep">·</span>
+      <div class="cd-unit"><span class="cd-num" id="cdSecs">00</span><span class="cd-lbl">Seg</span></div>
+    </div>
+    <p class="muted reveal">para celebrar juntos</p>
+  </div>
+</section>
+
+<!-- CEREMONIA -->
+<section class="sheet ceremony">
+  <div class="paper">
+    <p class="overline reveal">La Ceremonia</p>
+    <h2 class="serif-title reveal">Ceremonia Civil</h2>
+
+    <div class="divider reveal"><span></span><i>✦</i><span></span></div>
+
+    <div class="info-row reveal">
+      <span class="info-label">Hora</span>
+      <span class="info-value">3:00 P.M.</span>
+    </div>
+
+    <div class="info-row reveal">
+      <span class="info-label">Ubicación</span>
+      <span class="info-value">
+        Paradisio Terraza<br/>
+        5 de Febrero 161,<br/>
+        La Purísima, Zapotlanejo, Jal.
+      </span>
+    </div>
+
+    <a class="btn-elegant reveal" href="https://maps.google.com/?q=Paradisio+Terraza+5+de+Febrero+161+La+Purisima+Zapotlanejo+Jalisco" target="_blank" rel="noopener">
+      ¿Cómo llegar?
+    </a>
+  </div>
+</section>
+
+<!-- REVELACION -->
+<section class="sheet reveal-section">
+  <div class="paper">
+    <p class="overline reveal">Sorpresa</p>
+    <h2 class="serif-title reveal">¡Tenemos una noticia!</h2>
+
+    <div class="divider reveal"><span></span><i>♡</i><span></span></div>
+
+    <p class="poetic reveal">
+      Mientras unimos nuestras vidas,<br/>
+      un pequeño milagro nos llena de ilusión.
+    </p>
+
+    <h3 class="big-question reveal">¿Será niño<br/><em>o</em><br/>niña?</h3>
+
+    <div class="info-row reveal">
+      <span class="info-label">Revelación</span>
+      <span class="info-value">7:30 P.M.</span>
+    </div>
+
+    <p class="poetic reveal">
+      Te invitamos a vestir el color<br/>que dicte tu corazón.
+    </p>
+
+    <div class="colors reveal">
+      <div class="color-card blue">
+        <span class="swatch"></span>
+        <span class="c-title">Azul</span>
+        <span class="c-sub">si crees que será niño</span>
+      </div>
+      <div class="color-card pink">
+        <span class="swatch"></span>
+        <span class="c-title">Rosa</span>
+        <span class="c-sub">si piensas que será niña</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section class="sheet final">
+  <div class="paper">
+    <div class="ornament-top reveal">
+      <span class="line"></span>
+      <span class="diamond">◆</span>
+      <span class="line"></span>
+    </div>
+
+    <p class="poetic reveal">
+      Acompáñanos a celebrar el amor,<br/>
+      la ilusión y la llegada de nuestro bebé.
+    </p>
+
+    <p class="poetic small reveal">
+      Ese día será aún más especial,<br/>
+      porque además de unir nuestras vidas,<br/>
+      descubriremos juntos uno de los<br/>momentos más esperados.
+    </p>
+
+    <h3 class="closing reveal">¡Nos encantará verte ahí!</h3>
+
+    <p class="signature reveal">— Michelle <span>&</span> Sergio —</p>
+
+    <a class="btn-elegant primary reveal" id="rsvpBtn" href="#">Confirmar Asistencia</a>
+
+    <div class="ornament-bottom reveal">
+      <span class="line"></span>
+      <span class="dot"></span>
+      <span class="line"></span>
+    </div>
+
+    <p class="footnote reveal">23 · Mayo · 2026</p>
+  </div>
+</section>
+
+<script src="app.js"></script>
+</body>
+</html>
