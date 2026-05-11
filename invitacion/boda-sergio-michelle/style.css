@@ -161,7 +161,7 @@ body::before {
    ============================================ */
 .overline {
   font-family: var(--sans);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 400;
   letter-spacing: 0.5em;
   text-transform: uppercase;
@@ -173,7 +173,7 @@ body::before {
   font-family: var(--display);
   font-weight: 400;
   color: var(--ink);
-  font-size: clamp(46px, 9vw, 88px);
+  font-size: clamp(58px, 11vw, 100px);
   line-height: 1;
   margin: 20px 0 26px;
   display: flex;
@@ -197,7 +197,7 @@ body::before {
 .subtitle {
   font-family: var(--serif);
   font-style: italic;
-  font-size: clamp(15px, 2.2vw, 18px);
+  font-size: clamp(18px, 2.8vw, 24px);
   color: var(--ink-soft);
   letter-spacing: 0.08em;
   margin-bottom: 40px;
@@ -212,7 +212,7 @@ body::before {
 }
 .date-block .date-piece {
   font-family: var(--display);
-  font-size: clamp(40px, 7vw, 64px);
+  font-size: clamp(50px, 9vw, 76px);
   color: var(--ink);
   line-height: 1;
 }
@@ -225,7 +225,7 @@ body::before {
   border-left: 1px solid var(--gold-soft);
   border-right: 1px solid var(--gold-soft);
   font-family: var(--sans);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0.4em;
   text-transform: uppercase;
   color: var(--coffee);
@@ -235,7 +235,7 @@ body::before {
   font-family: var(--serif);
   font-style: italic;
   font-weight: 300;
-  font-size: clamp(16px, 2.4vw, 20px);
+  font-size: clamp(19px, 2.8vw, 24px);
   color: var(--ink-soft);
   line-height: 1.7;
   margin: 30px auto 20px;
@@ -252,7 +252,7 @@ body::before {
 .guest-label {
   display: block;
   font-family: var(--sans);
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.4em;
   text-transform: uppercase;
   color: var(--gold);
@@ -262,7 +262,7 @@ body::before {
   display: block;
   font-family: var(--serif);
   font-style: italic;
-  font-size: clamp(18px, 3vw, 22px);
+  font-size: clamp(22px, 3.5vw, 28px);
   color: var(--ink);
 }
 
@@ -273,7 +273,7 @@ body::before {
   align-items: center;
   gap: 6px;
   font-family: var(--sans);
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.4em;
   text-transform: uppercase;
   color: var(--coffee);
@@ -307,13 +307,13 @@ body::before {
 }
 .cd-num {
   font-family: var(--display);
-  font-size: clamp(34px, 6vw, 52px);
+  font-size: clamp(42px, 7vw, 62px);
   color: var(--ink);
   line-height: 1;
 }
 .cd-lbl {
   font-family: var(--sans);
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.4em;
   text-transform: uppercase;
   color: var(--coffee);
@@ -322,7 +322,7 @@ body::before {
 .cd-sep {
   font-family: var(--display);
   color: var(--gold);
-  font-size: clamp(24px, 4vw, 36px);
+  font-size: clamp(30px, 5vw, 44px);
   align-self: flex-start;
   margin-top: 4px;
 }
@@ -331,7 +331,7 @@ body::before {
   font-style: italic;
   color: var(--ink-soft);
   margin-top: 14px;
-  font-size: 15px;
+  font-size: 18px;
 }
 
 /* ============================================
@@ -340,7 +340,7 @@ body::before {
 .serif-title {
   font-family: var(--display);
   font-weight: 400;
-  font-size: clamp(34px, 6vw, 54px);
+  font-size: clamp(42px, 7vw, 64px);
   color: var(--ink);
   line-height: 1.15;
   margin-bottom: 14px;
@@ -362,7 +362,7 @@ body::before {
 .divider i {
   color: var(--gold);
   font-style: normal;
-  font-size: 12px;
+  font-size: 15px;
 }
 
 /* ============================================
@@ -374,7 +374,7 @@ body::before {
 .info-label {
   display: block;
   font-family: var(--sans);
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.5em;
   text-transform: uppercase;
   color: var(--gold);
@@ -383,7 +383,7 @@ body::before {
 .info-value {
   display: block;
   font-family: var(--serif);
-  font-size: clamp(17px, 2.4vw, 21px);
+  font-size: clamp(20px, 3vw, 26px);
   color: var(--ink);
   line-height: 1.6;
   font-weight: 400;
@@ -395,9 +395,9 @@ body::before {
 .btn-elegant {
   display: inline-block;
   margin-top: 30px;
-  padding: 16px 38px;
+  padding: 18px 44px;
   font-family: var(--sans);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0.4em;
   text-transform: uppercase;
   color: var(--ink);
@@ -438,20 +438,20 @@ body::before {
   font-family: var(--serif);
   font-style: italic;
   font-weight: 300;
-  font-size: clamp(16px, 2.4vw, 20px);
+  font-size: clamp(19px, 2.8vw, 24px);
   color: var(--ink-soft);
   line-height: 1.85;
   margin: 24px auto;
   max-width: 460px;
 }
 .poetic.small {
-  font-size: clamp(14px, 2vw, 17px);
+  font-size: clamp(17px, 2.4vw, 21px);
 }
 
 .big-question {
   font-family: var(--display);
   font-weight: 400;
-  font-size: clamp(40px, 7vw, 64px);
+  font-size: clamp(50px, 9vw, 78px);
   color: var(--ink);
   line-height: 1.1;
   margin: 36px 0;
@@ -499,14 +499,14 @@ body::before {
 .color-card.pink .swatch  { background: #e6c3c8; }
 .c-title {
   font-family: var(--display);
-  font-size: 22px;
+  font-size: 28px;
   color: var(--ink);
   margin-top: 6px;
 }
 .c-sub {
   font-family: var(--serif);
   font-style: italic;
-  font-size: 13px;
+  font-size: 16px;
   color: var(--ink-soft);
   line-height: 1.5;
 }
@@ -517,7 +517,7 @@ body::before {
 .closing {
   font-family: var(--display);
   font-weight: 400;
-  font-size: clamp(26px, 4.5vw, 38px);
+  font-size: clamp(32px, 5.5vw, 46px);
   color: var(--ink);
   margin: 30px 0 14px;
   line-height: 1.2;
@@ -525,7 +525,7 @@ body::before {
 .signature {
   font-family: var(--serif);
   font-style: italic;
-  font-size: clamp(18px, 2.6vw, 22px);
+  font-size: clamp(22px, 3vw, 27px);
   color: var(--coffee);
   margin: 10px 0 30px;
   letter-spacing: 0.05em;
@@ -538,10 +538,102 @@ body::before {
 .footnote {
   margin-top: 20px;
   font-family: var(--sans);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0.5em;
   text-transform: uppercase;
   color: var(--gold);
+}
+
+/* ============================================
+   VENUE NAME (destacado en ubicación)
+   ============================================ */
+.venue-name {
+  font-family: var(--display);
+  font-size: 1.35em;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: 0.04em;
+  display: inline-block;
+  margin-bottom: 4px;
+  border-bottom: 1px solid rgba(184,146,79,0.45);
+  padding-bottom: 4px;
+}
+
+/* ============================================
+   FOOTER PARADISIO
+   ============================================ */
+.paradisio-footer {
+  position: relative;
+  z-index: 3;
+  padding: 48px 24px 52px;
+  text-align: center;
+  background: linear-gradient(180deg, var(--cream-deep), var(--beige));
+  border-top: 1px solid rgba(184,146,79,0.2);
+}
+
+.paradisio-footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.paradisio-hosted {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--coffee);
+}
+
+.paradisio-brand {
+  font-family: var(--display);
+  font-size: clamp(30px, 5vw, 44px);
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  transition: color 0.4s ease;
+  position: relative;
+}
+.paradisio-brand::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  transform: scaleX(0.4);
+  transition: transform 0.5s ease;
+}
+.paradisio-brand:hover {
+  color: var(--gold);
+}
+.paradisio-brand:hover::after {
+  transform: scaleX(1);
+}
+
+.paradisio-address {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-soft);
+  letter-spacing: 0.04em;
+  margin-top: 4px;
+}
+
+.paradisio-url {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  text-transform: lowercase;
+  color: var(--gold);
+  text-decoration: none;
+  margin-top: 2px;
+  transition: color 0.4s ease;
+}
+.paradisio-url:hover {
+  color: var(--ink);
 }
 
 /* ============================================
