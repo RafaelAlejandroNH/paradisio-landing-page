@@ -170,7 +170,7 @@
         `quiero confirmar mi asistencia a su boda el 23 de Mayo. ¡Felicidades!`
       );
       // Reemplaza el número si es necesario
-      window.open(`https://wa.me/523310394617?text=${msg}`, '_blank');
+      window.open(`https://wa.me/523329457441?text=${msg}`, '_blank');
     });
   }
 
