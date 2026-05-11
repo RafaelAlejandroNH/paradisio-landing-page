@@ -140,11 +140,22 @@
   }
 
   if (splash) {
-    splash.addEventListener('click',     openInvitation, { once: true });
-    splash.addEventListener('touchend',  openInvitation, { once: true, passive: true });
+    let opened = false;
+
+    function triggerOpen(e) {
+      if (opened) return;
+      opened = true;
+      if (e && e.cancelable) e.preventDefault();
+      openInvitation();
+    }
+
+    // touchstart: más fiable en móvil, responde sin esperar 300ms
+    splash.addEventListener('touchstart', triggerOpen, { passive: false });
+    // click: fallback para desktop y teclado
+    splash.addEventListener('click', triggerOpen);
     splash.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') openInvitation();
-    }, { once: true });
+      if (e.key === 'Enter' || e.key === ' ') triggerOpen(e);
+    });
   }
 
   /* --------- RSVP --------- */
