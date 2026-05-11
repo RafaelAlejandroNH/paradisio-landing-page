@@ -89,37 +89,63 @@
     document.querySelectorAll('.section-break svg').forEach(el => el.classList.add('in'));
   }
 
-  /* --------- Music Toggle --------- */
-  const musicBtn = document.getElementById('musicToggle');
+  /* --------- Music --------- */
+  const musicBtn  = document.getElementById('musicToggle');
   const musicIcon = document.getElementById('musicIcon');
-  const audio = document.getElementById('bgMusic');
+  const audio     = document.getElementById('bgMusic');
   let playing = false;
 
-  if (audio) {
-    audio.volume = 0.35;
+  if (audio) audio.volume = 0.3;
+
+  function startMusic() {
+    if (playing || !audio) return;
+    audio.play().then(() => {
+      playing = true;
+      musicBtn.classList.add('playing');
+      musicIcon.textContent = '♫';
+    }).catch(() => {});
+  }
+
+  function stopMusic() {
+    if (!audio) return;
+    audio.pause();
+    playing = false;
+    musicBtn.classList.remove('playing');
+    musicIcon.textContent = '♪';
   }
 
   musicBtn.addEventListener('click', () => {
-    if (!playing) {
-      const p = audio.play();
-      if (p && typeof p.then === 'function') {
-        p.then(() => {
-          playing = true;
-          musicBtn.classList.add('playing');
-          musicIcon.textContent = '♫';
-        }).catch(() => { /* bloqueado por navegador */ });
-      } else {
-        playing = true;
-        musicBtn.classList.add('playing');
-        musicIcon.textContent = '♫';
-      }
-    } else {
-      audio.pause();
-      playing = false;
-      musicBtn.classList.remove('playing');
-      musicIcon.textContent = '♪';
-    }
+    playing ? stopMusic() : startMusic();
   });
+
+  /* --------- Splash --------- */
+  const splash = document.getElementById('splash');
+
+  function openInvitation() {
+    if (!splash) return;
+
+    // Arrancar música (el click ya fue, el navegador lo permite)
+    startMusic();
+
+    // Animación de cierre
+    splash.classList.add('closing');
+    splash.addEventListener('transitionend', () => {
+      splash.classList.add('hidden');
+    }, { once: true });
+
+    // Revelar hero inmediatamente
+    document.querySelectorAll('.hero .reveal').forEach((el, i) => {
+      setTimeout(() => el.classList.add('in'), 200 + i * 80);
+    });
+  }
+
+  if (splash) {
+    splash.addEventListener('click',     openInvitation, { once: true });
+    splash.addEventListener('touchend',  openInvitation, { once: true, passive: true });
+    splash.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') openInvitation();
+    }, { once: true });
+  }
 
   /* --------- RSVP --------- */
   const rsvpBtn = document.getElementById('rsvpBtn');

@@ -19,13 +19,70 @@
 <button class="music-toggle" id="musicToggle" aria-label="Reproducir música">
   <span class="music-icon" id="musicIcon">♪</span>
 </button>
-<audio id="bgMusic" loop preload="none">
-  <source src="https://assets.mixkit.co/music/preview/mixkit-romantic-piano-105.mp3" type="audio/mpeg">
-  <source src="https://cdn.pixabay.com/audio/2022/10/30/audio_347111d654.mp3" type="audio/mpeg">
+<audio id="bgMusic" loop preload="auto">
+  <source src="assets/paulyudin-wedding-485932.mp3" type="audio/mpeg">
 </audio>
 
 <!-- Grain overlay -->
 <div class="grain" aria-hidden="true"></div>
+
+<!-- ===================== SPLASH ===================== -->
+<div class="splash" id="splash" role="button" tabindex="0" aria-label="Toca para abrir la invitación">
+
+  <div class="splash-grain" aria-hidden="true"></div>
+
+  <!-- Anillos decorativos de fondo -->
+  <div class="splash-ring splash-ring--1" aria-hidden="true"></div>
+  <div class="splash-ring splash-ring--2" aria-hidden="true"></div>
+  <div class="splash-ring splash-ring--3" aria-hidden="true"></div>
+
+  <div class="splash-content">
+
+    <!-- Floral SVG superior -->
+    <svg class="splash-floral" viewBox="0 0 260 70" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M5,65 C25,48 50,28 80,12 C92,6 107,2 118,1" stroke="#b8924f" stroke-width="0.9" stroke-linecap="round"/>
+      <path d="M28,54 C22,44 27,35 36,38 C41,42 37,54 28,54Z" stroke="#b8924f" stroke-width="0.7" fill="rgba(184,146,79,0.08)"/>
+      <path d="M54,34 C48,25 53,17 62,20 C67,24 63,35 54,34Z" stroke="#b8924f" stroke-width="0.7" fill="rgba(184,146,79,0.08)"/>
+      <path d="M78,16 C72,8 78,1 86,4 C90,8 86,18 78,16Z" stroke="#b8924f" stroke-width="0.7" fill="rgba(184,146,79,0.08)"/>
+      <circle cx="118" cy="1" r="6" stroke="#b8924f" stroke-width="0.8" fill="rgba(184,146,79,0.12)"/>
+      <path d="M112,1 Q118,-5 124,1" stroke="#b8924f" stroke-width="0.65" fill="none"/>
+      <path d="M113,4 Q118,-1 123,4" stroke="#b8924f" stroke-width="0.55" fill="none"/>
+      <!-- center -->
+      <path d="M135,1 L141,1" stroke="#b8924f" stroke-width="0.55"/>
+      <path d="M130,0 L130,0" stroke="none"/>
+      <rect x="128" y="-2" width="4" height="4" rx="0.5" transform="rotate(45 130 0)" stroke="#b8924f" stroke-width="0.6" fill="rgba(184,146,79,0.22)"/>
+      <path d="M143,1 L149,1" stroke="#b8924f" stroke-width="0.55"/>
+      <!-- right mirror -->
+      <path d="M255,65 C235,48 210,28 180,12 C168,6 153,2 142,1" stroke="#b8924f" stroke-width="0.9" stroke-linecap="round"/>
+      <path d="M232,54 C238,44 233,35 224,38 C219,42 223,54 232,54Z" stroke="#b8924f" stroke-width="0.7" fill="rgba(184,146,79,0.08)"/>
+      <path d="M206,34 C212,25 207,17 198,20 C193,24 197,35 206,34Z" stroke="#b8924f" stroke-width="0.7" fill="rgba(184,146,79,0.08)"/>
+      <path d="M182,16 C188,8 182,1 174,4 C170,8 174,18 182,16Z" stroke="#b8924f" stroke-width="0.7" fill="rgba(184,146,79,0.08)"/>
+      <circle cx="142" cy="1" r="6" stroke="#b8924f" stroke-width="0.8" fill="rgba(184,146,79,0.12)"/>
+      <path d="M136,1 Q142,-5 148,1" stroke="#b8924f" stroke-width="0.65" fill="none"/>
+      <path d="M137,4 Q142,-1 147,4" stroke="#b8924f" stroke-width="0.55" fill="none"/>
+    </svg>
+
+    <p class="splash-pre">Michelle &amp; Sergio</p>
+
+    <!-- Sobre animado -->
+    <div class="splash-envelope" aria-hidden="true">
+      <div class="envelope-body">
+        <div class="envelope-flap"></div>
+        <div class="envelope-seal">◆</div>
+      </div>
+    </div>
+
+    <p class="splash-cta">
+      <span class="splash-cta-line">Toca para abrir</span>
+      <span class="splash-cta-sub">tu invitación</span>
+    </p>
+
+    <div class="splash-pulse" aria-hidden="true"></div>
+
+  </div>
+
+  <p class="splash-date">23 · Mayo · 2026</p>
+</div>
 
 <!-- ===================== HERO ===================== -->
 <section class="sheet hero" id="hero">
