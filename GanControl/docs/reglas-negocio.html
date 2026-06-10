@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GanControl · Reglas de Negocio del Backend</title>
+<style>
+  :root{
+    --bg:#f7f5f0; --card:#ffffff; --ink:#2b2620; --muted:#7a6f60;
+    --line:#e5dfd3; --brand:#4e7a3a; --brand-soft:#eaf2e4;
+    --salud:#4e9e5f; --repro:#9b72cf; --prod:#60b4e8; --comercial:#e6b84a; --general:#8a7355; --peligro:#e05c3a;
+    --warn-bg:#fdf3e3; --warn-line:#e8c477; --err-bg:#fdeae5; --err-line:#e8a08c;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+  a{color:var(--brand)}
+  header{background:linear-gradient(135deg,#3c5e2d,#4e7a3a);color:#fff;padding:34px 28px}
+  header h1{margin:0 0 6px;font-size:1.9rem}
+  header p{margin:0;opacity:.92;max-width:880px}
+  .meta{font-size:.85rem;opacity:.8;margin-top:10px}
+  .layout{display:flex;gap:28px;max-width:1280px;margin:0 auto;padding:28px}
+  nav{width:250px;flex-shrink:0;position:sticky;top:16px;align-self:flex-start;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;max-height:92vh;overflow:auto}
+  nav h3{margin:4px 0 8px;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+  nav a{display:block;padding:5px 8px;border-radius:6px;text-decoration:none;color:var(--ink);font-size:.92rem}
+  nav a:hover{background:var(--brand-soft)}
+  main{flex:1;min-width:0}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 28px;margin-bottom:26px;scroll-margin-top:14px}
+  h2{margin:0 0 14px;font-size:1.45rem;border-bottom:2px solid var(--brand-soft);padding-bottom:8px}
+  h3{margin:22px 0 8px;font-size:1.1rem}
+  table{border-collapse:collapse;width:100%;font-size:.92rem;margin:10px 0}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+  th{background:#f3efe6}
+  code{background:#f1ede3;border-radius:5px;padding:1px 6px;font-size:.88em;font-family:Consolas,monospace}
+  pre{background:#2b2620;color:#efe9dc;padding:14px 16px;border-radius:10px;overflow:auto;font-size:.85rem}
+  pre code{background:none;padding:0;color:inherit}
+  .pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:.75rem;font-weight:600;color:#fff;vertical-align:middle}
+  .pill.salud{background:var(--salud)} .pill.repro{background:var(--repro)} .pill.prod{background:var(--prod)}
+  .pill.comercial{background:var(--comercial);color:#5d4a12} .pill.general{background:var(--general)} .pill.peligro{background:var(--peligro)}
+  .pill.auto{background:#5a8bd6}
+  .tag{display:inline-block;border:1px solid var(--line);background:#faf8f2;border-radius:6px;padding:1px 8px;font-size:.78rem;margin:2px 3px 2px 0}
+  .aviso{background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:10px;padding:12px 16px;margin:12px 0}
+  .error{background:var(--err-bg);border:1px solid var(--err-line);border-radius:10px;padding:12px 16px;margin:12px 0}
+  .ok{background:var(--brand-soft);border:1px solid #c4d8b5;border-radius:10px;padding:12px 16px;margin:12px 0}
+  details.evento{border:1px solid var(--line);border-radius:12px;margin:12px 0;background:#fcfbf7;overflow:hidden}
+  details.evento>summary{cursor:pointer;padding:13px 18px;font-weight:600;font-size:1.02rem;list-style:none;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  details.evento>summary::before{content:"▸";color:var(--muted);transition:transform .15s}
+  details.evento[open]>summary::before{transform:rotate(90deg)}
+  details.evento>summary:hover{background:var(--brand-soft)}
+  .evento-body{padding:4px 20px 18px;border-top:1px dashed var(--line)}
+  .evento-body h4{margin:14px 0 6px;font-size:.92rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+  ul{margin:6px 0;padding-left:22px}
+  li{margin:3px 0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:980px){.layout{flex-direction:column}.grid2{grid-template-columns:1fr}nav{position:static;width:auto;max-height:none}}
+  #buscador{width:100%;padding:10px 14px;border:1px solid var(--line);border-radius:10px;font-size:1rem;margin-bottom:6px}
+  .paso{display:flex;gap:14px;margin:10px 0;align-items:flex-start}
+  .paso .num{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+  .muted{color:var(--muted);font-size:.9rem}
+  footer{text-align:center;color:var(--muted);font-size:.85rem;padding:10px 0 36px}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🐄 GanControl — Reglas de Negocio del Backend</h1>
+  <p>Documento de referencia generado a partir del código de <strong>GanControl.API</strong> (.NET 9) y de la base de datos
+  <strong>GanControl</strong> en el servidor SQL <strong>RAFA_ALEX</strong>. Aquí está todo lo que el sistema valida y hace
+  automáticamente: cómo crear animales, las reglas de cada tipo de evento, qué va en <code>datos_json</code>, los permisos por rol y los límites por plan.</p>
+  <div class="meta">Última actualización: 10 de junio de 2026 · Fuente: handlers en <code>Services/Eventos/Handlers</code>, servicios, DTOs y catálogos de la BD</div>
+</header>
+
+<div class="layout">
+<nav>
+  <h3>Contenido</h3>
+  <a href="#vision">1. Visión general</a>
+  <a href="#bd">2. Base de datos</a>
+  <a href="#roles">3. Roles y permisos</a>
+  <a href="#planes">4. Planes y límites</a>
+  <a href="#animales">5. Crear / administrar animales</a>
+  <a href="#estados">6. Estados del animal</a>
+  <a href="#eventos-generales">7. Reglas generales de eventos</a>
+  <a href="#eventos">8. Catálogo de eventos (reglas)</a>
+  <a href="#agenda">9. Agenda automática</a>
+  <a href="#endpoints">10. Endpoints del API</a>
+  <a href="#hallazgos">11. ⚠️ Hallazgos y pendientes</a>
+</nav>
+
+<main>
+
+<!-- ============================================================ -->
+<section id="vision">
+  <h2>1. Visión general</h2>
+  <p><strong>GanControl</strong> es un sistema de administración de ranchos ganaderos pensado para productores en México
+  (usuarios poco técnicos: el app debe ser muy intuitiva, con textos grandes y pasos simples). El backend es un API REST en
+  <strong>ASP.NET Core (.NET 9)</strong> con acceso a SQL Server mediante repositorios con SQL directo (sin EF).</p>
+  <p>El modelo central es: una <strong>cuenta</strong> (con un plan) tiene <strong>ranchos</strong>; cada rancho tiene
+  <strong>corrales/potreros</strong>, <strong>animales</strong> y <strong>usuarios con un rol por rancho</strong>.
+  Todo lo que le pasa a un animal se registra como un <strong>evento</strong> (vacuna, parto, venta, muerte…).
+  Cada tipo de evento tiene un <em>handler</em> en el backend que:</p>
+  <ul>
+    <li><strong>Valida</strong> antes de guardar (¿el animal está activo? ¿es hembra? ¿está gestante?…)</li>
+    <li><strong>Ejecuta efectos secundarios</strong> después de guardar (cambia el estado del animal, crea recordatorios en la agenda, da de baja, etc.)</li>
+  </ul>
+  <div class="ok"><strong>Idea clave del diseño:</strong> el frontend solo manda el evento con sus datos; el backend se encarga
+  de mover los estados del animal y de crear los recordatorios. Así el usuario del rancho no tiene que acordarse de nada:
+  registra "inseminación" y el sistema le agenda solo el "revisar celo" y el "diagnóstico de gestación".</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="bd">
+  <h2>2. Base de datos (servidor RAFA_ALEX · BD GanControl)</h2>
+  <p>28 tablas organizadas en 5 esquemas:</p>
+  <table>
+    <tr><th>Esquema</th><th>Tablas</th><th>Para qué sirve</th></tr>
+    <tr><td><code>auth</code></td><td>cuentas, usuarios, roles, planes, cuenta_planes</td><td>Cuentas, usuarios, login y suscripciones</td></tr>
+    <tr><td><code>cat</code></td><td>especies, razas, propositos, estados_salud, tipos_evento, tipos_evento_especie, paises, estados, ciudades</td><td>Catálogos (datos fijos de referencia)</td></tr>
+    <tr><td><code>rancho</code></td><td>ranchos, usuario_ranchos, rancho_especies, corrales_potreros, agenda, vendedores, veterinarios</td><td>El rancho y su gente</td></tr>
+    <tr><td><code>animal</code></td><td>animales, eventos_animal, fotos_animal, lotes, lote_animales, movimientos_animal</td><td>El ganado y su historial</td></tr>
+    <tr><td><code>sync</code></td><td>sync_log</td><td>Bitácora de sincronización offline (push/pull)</td></tr>
+  </table>
+
+  <h3>Tabla <code>animal.animales</code> (columnas principales)</h3>
+  <table>
+    <tr><th>Columna</th><th>Tipo</th><th>Nota</th></tr>
+    <tr><td>id, rancho_id, corral_id</td><td>uniqueidentifier</td><td>corral_id es opcional</td></tr>
+    <tr><td>especie_id, raza_id, proposito_id, estado_salud_id</td><td>int (FK a catálogos)</td><td>especie y estado_salud son obligatorios</td></tr>
+    <tr><td>codigo_arete</td><td>varchar(50) <strong>NOT NULL</strong></td><td>Único por rancho (regla de negocio)</td></tr>
+    <tr><td>chip_electronico, nombre, color</td><td>varchar</td><td>Opcionales</td></tr>
+    <tr><td>sexo</td><td>char(1)</td><td>Solo <code>M</code> o <code>H</code></td></tr>
+    <tr><td>origen</td><td>varchar(10)</td><td><code>nacido</code> | <code>comprado</code></td></tr>
+    <tr><td>fecha_nacimiento, peso_nacimiento, fecha_ingreso, precio_compra, vendedor_id</td><td>—</td><td>Datos de origen</td></tr>
+    <tr><td>madre_id, padre_id</td><td>uniqueidentifier</td><td>Genealogía (se conserva incluso tras destete)</td></tr>
+    <tr><td>estado_reproductivo</td><td>varchar(20)</td><td>Lo mueven los eventos — ver sección 6</td></tr>
+    <tr><td>activo, fecha_baja, motivo_baja</td><td>—</td><td>Baja lógica: muerte | venta | robo | otro</td></tr>
+    <tr><td>deleted_at</td><td>datetime2</td><td>Soft delete (eliminar ≠ dar de baja)</td></tr>
+  </table>
+
+  <h3>Tabla <code>animal.eventos_animal</code></h3>
+  <p>Columnas dedicadas: <code>fecha</code>, <code>hora</code>, <code>proxima_fecha</code>, <code>titulo</code> (obligatorio),
+  <code>descripcion</code>, <code>peso</code>, <code>monto</code>, <code>numero_crias</code>, <code>veterinario_id</code>,
+  <code>comprador_id</code>, <code>evento_padre_id</code> y <code>datos_json</code> (varchar(max)).
+  <strong>Regla:</strong> lo que ya tiene columna dedicada <u>no</u> se repite dentro de <code>datos_json</code>;
+  ahí solo van los campos específicos de cada tipo de evento (en camelCase).</p>
+
+  <h3>Catálogos actuales (datos reales en la BD)</h3>
+  <div class="grid2">
+    <div>
+      <table>
+        <tr><th colspan="2">cat.especies (activas)</th></tr>
+        <tr><td>1</td><td>bovino 🐄</td></tr>
+        <tr><td>4</td><td>porcino 🐖</td></tr>
+      </table>
+      <table>
+        <tr><th colspan="2">cat.propositos</th></tr>
+        <tr><td>leche</td><td>Producción de leche</td></tr>
+        <tr><td>carne</td><td>Producción de carne</td></tr>
+        <tr><td>doble_proposito</td><td>Doble propósito (leche/carne)</td></tr>
+        <tr><td>cria</td><td>Cría y reproducción</td></tr>
+        <tr><td>pie_de_cria</td><td>Pie de cría / genética</td></tr>
+        <tr><td>semental</td><td>Semental</td></tr>
+      </table>
+    </div>
+    <div>
+      <table>
+        <tr><th colspan="2">cat.estados_salud</th></tr>
+        <tr><td>sano</td><td>Sano</td></tr>
+        <tr><td>enfermo</td><td>Enfermo</td></tr>
+        <tr><td>en_tratamiento</td><td>En tratamiento</td></tr>
+        <tr><td>cuarentena</td><td>En cuarentena</td></tr>
+        <tr><td>prenada</td><td>Preñada</td></tr>
+        <tr><td>lactancia</td><td>En lactancia</td></tr>
+        <tr><td>secado</td><td>En período de secado</td></tr>
+        <tr><td>muerto</td><td>Muerto</td></tr>
+      </table>
+      <p class="muted"><code>cat.tipos_evento_especie</code> define qué eventos aplican a cada especie. Hoy: bovino tiene
+      todos (incl. ordeña, gestación, inseminación, marcaje); porcino no tiene ordeña, gestación, inseminación ni marcaje.</p>
+      <p class="muted"><strong>Alcance actual:</strong> el sistema solo maneja ganado <strong>bovino</strong> (leche y carne)
+      y <strong>porcino</strong>. Los iconos se manejan con la columna <code>icono</code> (la columna <code>emoji</code> fue eliminada).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="roles">
+  <h2>3. Roles y permisos</h2>
+  <p>Cada usuario tiene un rol <em>por rancho</em> en <code>rancho.usuario_ranchos.rol_rancho</code>.
+  Si el usuario no tiene fila en esa tabla para el rancho, el API responde "Rancho no encontrado o sin acceso".</p>
+  <table>
+    <tr><th>Acción</th><th>owner</th><th>admin</th><th>capturista</th><th>veterinario</th><th>visor</th></tr>
+    <tr><td>Ver animales, eventos, agenda</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+    <tr><td>Crear / editar animales</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>❌</td></tr>
+    <tr><td>Registrar eventos</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>❌</td></tr>
+    <tr><td>Dar de baja animales (muerte/venta/robo/otro)</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>❌</td></tr>
+    <tr><td>Eliminar animales (soft delete)</td><td>✅</td><td>✅</td><td>❌</td><td>❌</td><td>❌</td></tr>
+    <tr><td>Eliminar eventos (soft delete)</td><td>✅</td><td>✅</td><td>❌</td><td>❌</td><td>❌</td></tr>
+  </table>
+  <p class="muted">Regla del código: las validaciones se hacen por exclusión (<code>rol == "visor"</code> bloquea registrar;
+  <code>visor || capturista</code> bloquea bajas; eliminar exige <code>owner || admin</code>).</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="planes">
+  <h2>4. Planes y límites (auth.planes)</h2>
+  <table>
+    <tr><th>Plan</th><th>Precio mensual</th><th>Máx. animales por rancho</th><th>Máx. ranchos</th><th>Máx. usuarios</th></tr>
+    <tr><td><strong>Libre</strong> (free)</td><td>$0</td><td>30</td><td>1</td><td>1</td></tr>
+    <tr><td><strong>Rancho</strong></td><td>$299</td><td>500</td><td>3</td><td>5</td></tr>
+    <tr><td><strong>Pro</strong></td><td>$599</td><td>99,999</td><td>10</td><td>20</td></tr>
+  </table>
+  <p>Al crear un animal se cuentan los <strong>animales activos del rancho</strong> y se compara contra el límite del plan de
+  la cuenta. Si se alcanza el tope, el API responde: <em>"Tu plan permite máximo N animales por rancho. Actualiza tu plan."</em></p>
+</section>
+
+<!-- ============================================================ -->
+<section id="animales">
+  <h2>5. Crear y administrar animales</h2>
+
+  <h3>Pasos para registrar un animal nuevo (POST <code>/api/Animales</code>)</h3>
+  <div class="paso"><div class="num">1</div><div><strong>Acceso:</strong> el usuario debe tener rol en el rancho y no ser <code>visor</code>.</div></div>
+  <div class="paso"><div class="num">2</div><div><strong>Campos obligatorios:</strong> <code>ranchoId</code>, <code>especieId</code>, <code>codigoArete</code> (no vacío) y <code>sexo</code> = <code>M</code> o <code>H</code>.</div></div>
+  <div class="paso"><div class="num">3</div><div><strong>Arete único:</strong> no puede existir otro animal con el mismo arete en ese rancho.</div></div>
+  <div class="paso"><div class="num">4</div><div><strong>Límite del plan:</strong> se valida contra los animales activos del rancho (sección 4).</div></div>
+  <div class="paso"><div class="num">5</div><div><strong>Evento inicial automático:</strong> según <code>origen</code> se crea, en la <u>misma transacción</u> que el animal (todo o nada):
+    <ul>
+      <li><code>origen = "nacido"</code> (default) → evento <strong>Nacimiento</strong> con fecha = fecha de nacimiento (o ingreso, u hoy), peso = peso al nacer, y <code>datos_json = {"madreId":…, "padreId":…}</code> si vienen.</li>
+      <li><code>origen = "comprado"</code> → evento <strong>Compra</strong> con fecha = fecha de ingreso (u hoy), monto = precio de compra, peso, y <code>datos_json = {"vendedorId":…}</code> si viene.</li>
+    </ul>
+  </div></div>
+
+  <h3>Campos del request <code>CrearAnimalRequest</code></h3>
+  <table>
+    <tr><th>Campo</th><th>¿Obligatorio?</th><th>Notas</th></tr>
+    <tr><td>ranchoId, especieId, codigoArete, sexo</td><td><strong>Sí</strong></td><td>sexo: M / H</td></tr>
+    <tr><td>corralId, razaId, propositoId, estadoSaludId</td><td>No</td><td>FKs a catálogos</td></tr>
+    <tr><td>nombre, chipElectronico, color, notas</td><td>No</td><td>Texto libre</td></tr>
+    <tr><td>origen</td><td>No (default "nacido")</td><td><code>nacido</code> | <code>comprado</code></td></tr>
+    <tr><td>fechaNacimiento, pesoNacimiento</td><td>No</td><td>Para nacidos</td></tr>
+    <tr><td>fechaIngreso, precioCompra, vendedorId</td><td>No</td><td>Para comprados</td></tr>
+    <tr><td>madreId, padreId</td><td>No</td><td>Genealogía (animales del rancho)</td></tr>
+    <tr><td>id</td><td>No</td><td>El cliente puede mandar su propio GUID (útil para modo offline)</td></tr>
+  </table>
+
+  <h3>Editar, dar de baja y eliminar</h3>
+  <ul>
+    <li><strong>Editar (PUT):</strong> mismo permiso que crear; si se cambia el arete, se re-valida la unicidad excluyendo al propio animal.</li>
+    <li><strong>Dar de baja (POST /baja):</strong> motivos válidos: <code>muerte</code>, <code>venta</code>, <code>robo</code>, <code>otro</code>. Pone <code>activo=0</code>, <code>fecha_baja</code>, <code>motivo_baja</code>. Bloqueado para visor y capturista.</li>
+    <li><strong>Eliminar (DELETE):</strong> soft delete (<code>deleted_at</code>), solo owner/admin. <em>Nota:</em> normalmente la baja correcta es por evento de <strong>muerte</strong> o <strong>venta</strong>, que además limpian lotes y agendas.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<section id="estados">
+  <h2>6. Estados del animal (los mueven los eventos)</h2>
+  <p>El animal tiene dos "semáforos" que el backend actualiza solo:</p>
+  <div class="grid2">
+    <div>
+      <h3>estado_salud_id</h3>
+      <table>
+        <tr><th>Lo pone</th><th>Estado</th></tr>
+        <tr><td>Evento <strong>enfermedad</strong></td><td>enfermo</td></tr>
+        <tr><td>Evento <strong>alta médica</strong> o revisión con <code>declararSano=true</code></td><td>sano</td></tr>
+        <tr><td>Evento <strong>muerte</strong></td><td>muerto</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>estado_reproductivo (solo hembras)</h3>
+      <table>
+        <tr><th>Lo pone</th><th>Estado</th></tr>
+        <tr><td>Monta / Inseminación</td><td><code>servida</code></td></tr>
+        <tr><td>Gestación positiva</td><td><code>gestante</code></td></tr>
+        <tr><td>Gestación negativa / Aborto</td><td><code>vacia</code></td></tr>
+        <tr><td>Parto</td><td><code>lactante</code></td></tr>
+        <tr><td>Secado</td><td><code>seca</code></td></tr>
+        <tr><td>Destete (en la <em>cría</em>)</td><td><code>destetado</code></td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="aviso"><strong>Ciclo reproductivo típico:</strong> vacía → (monta/inseminación) → servida → (gestación +) → gestante →
+  (secado) → seca → (parto) → lactante → (secado o nueva monta)… Si hay aborto o diagnóstico negativo, regresa a vacía.</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="eventos-generales">
+  <h2>7. Reglas generales para TODOS los eventos</h2>
+  <p>Antes de aplicar las reglas específicas de cada tipo, <code>EventoService.CrearAsync</code> valida siempre:</p>
+  <ul>
+    <li>El usuario tiene rol en el rancho y <strong>no es visor</strong>.</li>
+    <li>El animal existe y <strong>pertenece al rancho</strong> indicado en el request.</li>
+    <li>El <strong>título es obligatorio</strong>.</li>
+    <li>El <code>tipoEventoId</code> debe existir en <code>cat.tipos_evento</code>; con su <code>clave</code> se busca el handler correspondiente.</li>
+    <li>Si el tipo tiene handler, se ejecutan sus <strong>validaciones</strong>; si no tiene handler (pesaje, observación, nacimiento, compra…), se guarda sin validación extra.</li>
+    <li><strong>Validación estricta de <code>datos_json</code></strong> (<code>DatosJsonValidator</code>): el JSON debe cumplir el esquema del tipo de evento.
+      Si está mal formado, trae un <strong>campo desconocido</strong> (ej. typo "produto") o un <strong>tipo incorrecto</strong> (ej. <code>dosis: "cinco"</code>),
+      el evento <strong>NO se guarda</strong> y el API responde con el error. El JSON válido se re-serializa en camelCase y sin nulls, para que todos los eventos queden con formato uniforme.</li>
+  </ul>
+  <p>Después de guardar, se ejecutan los <strong>efectos secundarios</strong> del handler (cambios de estado, agendas, bajas, movimientos…).</p>
+
+  <h3>Eliminación de eventos</h3>
+  <ul>
+    <li>Soft delete, solo <strong>owner/admin</strong>.</li>
+    <li><strong>NO se pueden eliminar</strong> (HTTP 409) los eventos con efectos permanentes:
+      <span class="tag">muerte</span><span class="tag">venta</span><span class="tag">parto</span>
+      <span class="tag">traslado</span><span class="tag">marcaje</span><span class="tag">compra</span>
+      — habría que hacer la "reversión" correspondiente (aún no implementada).</li>
+  </ul>
+
+  <h3>Convención de <code>datos_json</code></h3>
+  <pre><code>// El frontend serializa en camelCase SOLO los campos específicos del tipo.
+// Ejemplo para una vacuna:
+{
+  "producto": "Bacterina triple",
+  "dosis": 5, "unidadDosis": "ml",
+  "via": "intramuscular",
+  "lote": "L-2241", "laboratorio": "Zoetis",
+  "fechaCaducidad": "2026-12-01",
+  "notas": "Sin reacción"
+}
+// peso, monto, numeroCrias, veterinarioId, compradorId, proximaFecha,
+// fecha, hora, titulo, descripcion ya tienen columna propia: NO van aquí.</code></pre>
+</section>
+
+<!-- ============================================================ -->
+<section id="eventos">
+  <h2>8. Catálogo de eventos — reglas, validaciones y datos_json</h2>
+  <p class="muted">22 tipos activos en <code>cat.tipos_evento</code>. Haz clic en cada uno para ver el detalle.
+  Todos los handlers están conectados a su clave del catálogo y <code>datos_json</code> se valida de forma estricta contra el esquema de cada tipo.</p>
+  <input id="buscador" type="search" placeholder="🔍 Buscar evento… (ej. parto, vacuna, venta)">
+
+  <!-- PRODUCCIÓN -->
+  <h3><span class="pill prod">Producción</span></h3>
+
+  <details class="evento" data-nombre="pesaje produccion peso bascula">
+    <summary>⚖️ Pesaje <span class="pill prod">producción</span> <span class="tag">id 1 · clave: pesaje</span> <span class="tag">sin handler</span></summary>
+    <div class="evento-body">
+      <h4>Validaciones</h4><ul><li>Solo las generales (sin handler propio).</li></ul>
+      <h4>Efectos</h4><ul><li>Ninguno.</li></ul>
+      <h4>Columnas dedicadas</h4><p><code>peso</code> (kg) — aquí va el peso, no en el JSON.</p>
+      <h4>datos_json (DatosPesaje)</h4>
+      <ul>
+        <li><code>condicionCorporal</code>: 1–9</li>
+        <li><code>metodoPesaje</code>: <code>bascula</code> | <code>cinta</code> | <code>estimado</code></li>
+        <li><code>notas</code></li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="evento" data-nombre="ordena ordeña leche litros produccion">
+    <summary>🥛 Ordeña <span class="pill prod">producción</span> <span class="tag">id 2 · clave: ordena</span></summary>
+    <div class="evento-body">
+      <h4>Validaciones</h4>
+      <ul><li>Animal activo.</li><li>Hembra (<code>H</code>).</li><li><code>estado_reproductivo = 'lactante'</code> (solo se ordeña una vaca lactando).</li></ul>
+      <h4>Efectos</h4><ul><li>Ninguno.</li></ul>
+      <h4>datos_json (DatosOrdena)</h4>
+      <ul>
+        <li><code>litros</code> (decimal)</li>
+        <li><code>turno</code>: <code>mañana</code> | <code>tarde</code> | <code>noche</code></li>
+        <li><code>calidad</code>: A | B | C · <code>porcentajeGrasa</code> · <code>notas</code></li>
+      </ul>
+    </div>
+  </details>
+
+  <!-- SALUD -->
+  <h3><span class="pill salud">Salud</span></h3>
+
+  <details class="evento" data-nombre="vacuna salud refuerzo">
+    <summary>💉 Vacuna <span class="pill salud">salud</span> <span class="tag">id 3 · clave: vacuna</span></summary>
+    <div class="evento-body">
+      <h4>Validaciones</h4><ul><li>Animal activo (sin restricción de sexo/estado).</li></ul>
+      <h4>Efectos</h4>
+      <ul><li>Si mandas <code>proximaFecha</code> → crea agenda <em>"Refuerzo: {título}"</em> en esa fecha, mismo animal y tipo.</li></ul>
+      <h4>Columnas dedicadas</h4><p><code>veterinario_id</code>, <code>proxima_fecha</code>, <code>monto</code> (costo).</p>
+      <h4>datos_json (DatosVacuna)</h4>
+      <ul>
+        <li><code>producto</code>, <code>dosis</code> + <code>unidadDosis</code> (<code>ml</code>|<code>cc</code>|<code>mg</code>)</li>
+        <li><code>via</code>: intramuscular | subcutanea | oral | intranasal | otra</li>
+        <li><code>lote</code>, <code>laboratorio</code>, <code>fechaCaducidad</code>, <code>notas</code></li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="evento" data-nombre="desparasitacion salud parasitos">
+    <summary>🪱 Desparasitación <span class="pill salud">salud</span> <span class="tag">id 4 · clave: desparasitacion</span></summary>
+    <div class="evento-body">
+      <h4>Validaciones</h4><ul><li>Animal activo.</li></ul>
+      <h4>Efectos</h4><ul><li>Si hay <code>proximaFecha</code> → agenda <em>"Refuerzo desparasitacion: {título}"</em>.</li></ul>
+      <h4>Columnas dedicadas</h4><p><code>veterinario_id</code>, <code>proxima_fecha</code>.</p>
+      <h4>datos_json (DatosDesparasitacion)</h4>
+      <ul><li><code>producto</code>, <code>principioActivo</code>, <code>dosis</code> + <code>unidadDosis</code>, <code>via</code>, <code>lote</code>, <code>notas</code></li></ul>
+    </div>
+  </details>
+
+  <details class="evento" data-nombre="enfermedad salud sintomas severidad enfermo">
+    <summary>🤒 Enfermedad <span class="pill salud">salud</span> <span class="tag">id 5 · clave: enfermedad</span></summary>
+    <div class="evento-body">
+      <h4>Validaciones</h4><ul><li>Animal activo.</li></ul>
+      <h4>Efectos</h4>
+      <ul>
+        <li>Estado de salud del animal → <strong>enfermo</strong>.</li>
+        <li>Agenda de revisión automática según <code>severidad</code> del JSON:
+          <ul>
+            <li><code>severa</code> → <strong>+2 días</strong>, título <em>"Urgente: Revisión por {título}"</em></li>
+            <li><code>moderada</code> → <strong>+5 días</strong>, título <em>"Revisión: {título}"</em></li>
+            <li><code>leve</code> / sin dato → <strong>+7 días</strong> (por precaución)</li>
+          </ul>
+        </li>
+      </ul>
+      <h4>Columnas dedicadas</h4><p><code>descripcion</code>, <code>veterinario_id</code>.</p>
+      <h4>datos_json (DatosEnfermedad)</h4>
+      <ul>
+        <li><code>sintomas</code>: lista de texto</li>
+        <li><code>diagnostico</code> · <code>severidad</code>: leve | moderada | severa</li>
+        <li><code>tratamientoIniciado</code> (bool) · <code>estadoActual</code>: activo | recuperado | cronico · <code>notas</code></li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="evento" data-nombre="tratamiento medico salud dosis medicina">
+    <summary>💊 Tratamiento médico <span class="pill salud">salud</span> <span class="tag">id 6 · clave: tratamiento</span></summary>
+    <div class="evento-body">
+      <h4>Validaciones</h4><ul><li>Animal activo.</li><li><strong>No</strong> cambia el estado de salud: sigue "enfermo" hasta el alta.</li></ul>
+      <h4>Efectos</h4>
+      <ul>
+        <li>Si <code>duracionDias &gt; 0</code> y <code>frecuenciaHoras &gt; 0</code> → crea una agenda <strong>por cada dosis</strong>
+        (cada N horas, máx. 30 dosis), títulos <em>"Dosis i/total: {título}"</em>.</li>
+        <li>Si no, y hay <code>proximaFecha</code> → 1 agenda <em>"Próxima dosis: {título}"</em>.</li>
+      </ul>
+      <h4>Columnas dedicadas</h4><p><code>veterinario_id</code>, <code>proxima_fecha</code>.</p>
+      <h4>datos_json (DatosTratamiento)</h4>
+      <ul><li><code>producto</code>, <code>dosis</code> + <code>unidadDosis</code>, <code>via</code>, <code>duracionDias</code>, <code>frecuenciaHoras</code>, <code>eventoEnfermedadId</code> (liga a la enfermedad), <code>notas</code></li></ul>
+    </div>
+  </details>
+
+  <details class="evento" data-nombre="revision veterinaria salud chequeo declarar sano">
+    <summary>🩺 Revisión veterinaria <span class="pill salud">salud</span> <span class="tag">id 7 · clave: revision</span></summary>
+    <div class="evento-body">
+      <h4>Validaciones</h4><ul><li>Animal activo.</li></ul>
+      <h4>Efectos</h4>
+      <ul>
+        <li>Si <code>declararSano = true</code> en el JSON → estado de salud = <strong>sano</strong>.</li>
+        <li>Si hay <code>proximaFecha</code> → agenda <em>"Seguimiento: {título}"</em>. (Ambos pueden ocurrir juntos.)</li>
+      </ul>
+      <h4>Columnas dedicadas</h4><p><code>veterinario_id</code>, <code>descripcion</code>.</p>
+      <h4>datos_json (DatosRevision)</h4>
+      <ul>
+        <li><code>motivo</code>: rutina | sospecha | seguimiento</li>
+        <li><code>hallazgos</code>, <code>temperatura</code> (°C), <code>frecuenciaCardiaca</code> (lpm), <code>frecuenciaRespiratoria</code> (rpm)</li>
+        <li><code>recomendaciones</code>, <code>declararSano</code> (bool), <code>notas</code></li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="evento" data-nombre="alta medica salud recuperado sano">
+    <summary>✅ Alta médica <span class="pill salud">salud</span> <span class="tag">id 23 · clave: alta_medica</span></summary>
+    <div class="evento-body">
+      <h4>Validaciones</h4><ul><li>Animal activo.</li></ul>
+      <h4>Efectos</h4><ul><li>Estado de salud del animal → <strong>sano</strong>.</li></ul>
+      <h4>Columnas dedicadas</h4><p><code>veterinario_id</code>, <code>descripcion</code>.</p>
+      <h4>datos_json (DatosAltaMedica)</h4>
+      <ul><li><code>eventoEnfermedadId</code> (qué caso se cierra), <code>diagnosticoFinal</code>, <code>observaciones</code>, <code>notas</code></li></ul>
+    </div>
+  </details>
+
+  <!-- REPRODUCTIVO -->
+  <h3><span class="pill repro">Reproductivo</span></h3>
+
+  <details class="evento" data-nombre="monta natural reproductivo servida celo toro">
+    <summary>🐂 Monta natural <span class="pill repro">reproductivo</span> <span class="tag">id 8 · clave: monta</span></summary>
+    <div class="evento-body">
+      <p>El animal del evento es siempre <strong>la hembra servida</strong>.</p>
+      <h4>Validaciones</h4><ul><li>Animal activo.</li><li>Hembra (<code>H</code>).</li></ul>
+      <h4>Efectos</h4>
+      <ul>
+        <li><code>estado_reproductivo = 'servida'</code></li>
+        <li>Agenda <strong>+21 días</strong>: <em>"Revisar celo - {arete}"</em> (si regresa al celo, la monta falló).</li>
+        <li>Agenda <strong>+50 días</strong>: <em>"Diagnóstico gestación - {arete}"</em> (rango recomendado 45–60).</li>
+      </ul>
+      <h4>datos_json (DatosMonta)</h4>
+      <ul>
+        <li><code>machoId</code> (animal del rancho) o <code>machoArete</code> + <code>machoExterno=true</code></li>
+        <li><code>tipoServicio</code>: individual | grupal · <code>fechaInicio</code> / <code>fechaFin</code> · <code>notas</code></li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="evento" data-nombre="inseminacion artificial reproductivo semen pajilla iatf">
+    <summary>🧪 Inseminación artificial <span class="pill repro">reproductivo</span> <span class="tag">id 9 · clave: inseminacion</span></summary>
+    <div class="evento-body">
+      <p>Misma lógica que la monta — el animal del evento es <strong>la hembra</strong>.</p>
+      <h4>Validaciones</h4><ul><li>Animal activo + hembra.</li></ul>
+      <h4>Efectos</h4>
+      <ul><li><code>servida</code> + agenda +21 días "Revisar celo" + agenda +50 días "Diagnóstico gestación".</li></ul>
+      <h4>Columnas dedicadas</h4><p><code>veterinario_id</code>.</p>
+      <h4>datos_json (DatosInseminacion)</h4>
+      <ul>
+        <li><code>machoId</code> / <code>machoArete</code> / <code>machoExterno</code></li>
+        <li><code>semenLote</code>, <code>pajilla</code>, <code>tecnico</code></li>
+        <li><code>metodo</code>: convencional | sexada | IATF · <code>notas</code></li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="evento" data-nombre="gestacion confirmacion preñez palpacion ultrasonido reproductivo gestante">
+    <summary>🤰 Confirmación de gestación <span class="pill repro">reproductivo</span> <span class="tag">id 10 · clave: gestacion</span></summary>
+    <div class="evento-body">
+      <h4>Validaciones</h4><ul><li>Animal activo.</li><li>Hembra.</li></ul>
+      <h4>Efectos — dependen de <code>datos_json.resultado</code></h4>
+      <table>
+        <tr><th>resultado</th><th>Qué pasa</th></tr>
+        <tr><td><code>positivo</code></td><td>Estado → <strong>gestante</strong>. Si mandas <code>proximaFecha</code> (= fecha probable de parto):
+          agenda <em>"Parto probable - {arete}"</em> en esa fecha y agenda <em>"Secado - {arete}"</em> 60 días antes del parto (solo si esa fecha aún es futura).</td></tr>
+        <tr><td><code>negativo</code></td><td>Estado → <strong>vacía</strong>. Agenda <em>"Reprogramar servicio - {arete}"</em> a +15 días.</td></tr>
+        <tr><td><code>dudoso</code> / vacío</td><td>Sin efectos.</td></tr>
+      </table>
+      <h4>Columnas dedicadas</h4><p><code>veterinario_id</code>, <code>proxima_fecha</code> (fecha probable de parto).</p>
+      <h4>datos_json (DatosGestacion)</h4>
+      <ul>
+        <li><code>metodoDiagnostico</code>: palpacion | ultrasonido | laboratorio</li>
+        <li><code>diasGestacion</code> · <code>resultado</code>: positivo | negativo | dudoso</li>
+        <li><code>fechaProbableParto</code> · <code>eventoServicioId</code> (monta/inseminación origen) · <code>notas</code></li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="evento" data-nombre="parto reproductivo crias lactante nacimiento">
+    <summary>🐮 Parto <span class="pill repro">reproductivo</span> <span class="tag">id 11 · clave: parto</span> <span class="tag">🔒 no eliminable</span></summary>
+    <div class="evento-body">
+      <h4>Validaciones</h4>
+      <ul><li>Animal activo.</li><li>Hembra.</li><li>La fecha <strong>no puede ser futura</strong>.</li></ul>
+      <h4>Efectos</h4>
+      <ul><li>La madre pasa a <code>estado_reproductivo = 'lactante'</code>.</li>
+      <li class="muted">Las crías NO se crean automáticamente: hay que registrarlas como animales nuevos (origen "nacido", con madreId).</li></ul>
+      <h4>Columnas dedicadas</h4><p><code>peso</code>, <code>numero_crias</code>, <code>veterinario_id</code>.</p>
+      <h4>datos_json (DatosParto)</h4>
+      <ul>
+        <li><code>tipoParto</code>: normal | distocico | cesarea</li>
+        <li><code>criasVivas</code>, <code>criasMuertas</code></li>
+        <li><code>sexoCrias</code>: ["M","H",…] · <code>aretesCrias</code>: lista</li>
+        <li><code>pesoPromedio</code> (kg) · <code>complicaciones</code> · <code>notas</code></li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="evento" data-nombre="destete reproductivo cria madre">
+    <summary>🍼 Destete <span class="pill repro">reproductivo</span> <span class="tag">id 12 · clave: destete</span></summary>
+    <div class="evento-body">
+      <p>El animal del evento es <strong>la cría que se desteta</strong> (no la madre).</p>
+      <h4>Validaciones</h4><ul><li>Animal activo.</li></ul>
+      <h4>Efectos</h4>
+      <ul>
+        <li>Cría → <code>estado_reproductivo = 'destetado'</code>.</li>
+        <li>Agenda <strong>+14 días</strong>: <em>"Pesaje post-destete - {arete}"</em> (con icono de pesaje).</li>
+        <li><code>madre_id</code> se conserva (genealogía); el estado de la madre <strong>no</strong> se cambia automáticamente.</li>
+      </ul>
+      <h4>Columnas dedicadas</h4><p><code>peso</code> (peso al destete).</p>
+      <h4>datos_json (DatosDestete)</h4>
+      <ul><li><code>edadDias</code> · <code>motivo</code>: programado | temprano | forzoso · <code>madreId</code> · <code>notas</code></li></ul>
+    </div>
+  </details>
+
+  <details class="evento" data-nombre="aborto reproductivo gestante vacia">
+    <summary>💔 Aborto <span class="pill repro">reproductivo</span> <span class="tag">id 1005 · clave: aborto</span></summary>
+    <div class="evento-body">
+      <h4>Validaciones</h4>
+      <ul><li>Animal activo.</li><li>Hembra.</li><li><code>estado_reproductivo = 'gestante'</code> (solo aborta una hembra confirmada gestante).</li></ul>
+      <h4>Efectos</h4>
+      <ul>
+        <li>Estado → <code>vacia</code>.</li>
+        <li><strong>Cancela todas las agendas futuras</strong> del animal (parto probable, secado, etc.); habrá que reprogramar el servicio.</li>
+      </ul>
+      <h4>Columnas dedicadas</h4><p><code>veterinario_id</code>, <code>descripcion</code>.</p>
+      <h4>datos_json (DatosAborto)</h4>
+      <ul>
+        <li><code>semanaGestacion</code> · <code>causa</code>: infecciosa | traumatica | toxica | hormonal | desconocida</li>
+        <li><code>fetosExpulsados</code> (bool) · <code>necropsiaFeto</code> (bool) · <code>notas</code></li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="evento" data-nombre="secado reproductivo lechero seca">
+    <summary>🚱 Secado <span class="pill repro">reproductivo</span> <span class="tag">id 1006 · clave: secado</span></summary>
+    <div class="evento-body">
+      <p>Para bovino lechero: dejar de ordeñar antes del parto.</p>
+      <h4>Validaciones</h4>
+      <ul><li>Animal activo.</li><li>Hembra.</li><li><code>estado_reproductivo</code> debe ser <code>gestante</code> o <code>lactante</code>.</li></ul>
+      <h4>Efectos</h4><ul><li>Estado → <code>seca</code>.</li></ul>
+      <h4>datos_json (DatosSecado)</h4>
+      <ul><li><code>diasAnteParto</code> · <code>productoSellado</code> (antibiótico intramamario) · <code>tratamientoAplicado</code> (bool) · <code>notas</code></li></ul>
+    </div>
+  </details>
+
+  <details class="evento" data-nombre="nacimiento reproductivo automatico crear animal">
+    <summary>👶 Nacimiento <span class="pill repro">reproductivo</span> <span class="pill auto">automático</span> <span class="tag">id 1007 · clave: nacimiento</span></summary>
+    <div class="evento-body">
+      <p>Se crea <strong>automáticamente</strong> al registrar un animal con <code>origen = "nacido"</code> (es el primer evento de su historial). No tiene handler ni validaciones propias.</p>
+      <h4>datos_json (DatosNacimiento)</h4>
+      <ul><li><code>madreId</code>, <code>padreId</code> (los arma el backend al crear el animal) · <code>notas</code></li></ul>
+    </div>
+  </details>
+
+  <!-- COMERCIAL -->
+  <h3><span class="pill comercial">Comercial</span></h3>
+
+  <details class="evento" data-nombre="compra comercial vendedor automatico">
+    <summary>🛒 Compra <span class="pill comercial">comercial</span> <span class="pill auto">automático</span> <span class="tag">id 13 · clave: compra</span> <span class="tag">🔒 no eliminable</span></summary>
+    <div class="evento-body">
+      <p>Se crea <strong>automáticamente</strong> al registrar un animal con <code>origen = "comprado"</code>. Sin handler.</p>
+      <h4>Columnas dedicadas</h4><p><code>monto</code> (precio de compra), <code>peso</code>.</p>
+      <h4>datos_json — automático vs. manual</h4>
+      <ul>
+        <li>El evento automático solo guarda: <code>{ "vendedorId": "guid" }</code>.</li>
+        <li>El DTO completo (DatosCompra) contempla además: <code>vendedorNombre</code>, <code>lugarCompra</code>,
+        <code>metodoPago</code> (efectivo | transferencia | cheque), <code>factura</code>, <code>costoPorKilo</code>, <code>costoFlete</code>, <code>notas</code>.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="evento" data-nombre="venta comercial comprador baja margen">
+    <summary>💰 Venta <span class="pill comercial">comercial</span> <span class="tag">id 14 · clave: venta</span> <span class="tag">🔒 no eliminable</span></summary>
+    <div class="evento-body">
+      <h4>Validaciones</h4><ul><li>Animal activo (no se puede vender dos veces).</li></ul>
+      <h4>Efectos</h4>
+      <ul>
+        <li><strong>Da de baja al animal</strong>: <code>activo=0</code>, <code>fecha_baja</code> = fecha del evento, <code>motivo_baja = "venta"</code> (con nota "Destino: …" si viene en el JSON).</li>
+        <li>Lo saca de todos los <strong>lotes</strong> (soft-remove).</li>
+        <li><strong>Cancela las agendas pendientes</strong> del animal.</li>
+        <li>Calcula y registra en el log el <strong>margen estimado</strong>: monto de venta − precio de compra − costos acumulados en eventos − flete.</li>
+      </ul>
+      <h4>Columnas dedicadas</h4><p><code>monto</code> (precio total de venta — NO va en el JSON), <code>comprador_id</code> (de <code>rancho.vendedores</code>).</p>
+      <h4>datos_json (DatosVenta)</h4>
+      <ul>
+        <li><code>precioPorKilo</code>, <code>pesoVenta</code></li>
+        <li><code>destino</code>: rastro | engorda | reproduccion | otro</li>
+        <li><code>metodoPago</code>, <code>factura</code>, <code>costoFlete</code>, <code>notas</code></li>
+      </ul>
+    </div>
+  </details>
+
+  <!-- GENERAL -->
+  <h3><span class="pill general">General</span></h3>
+
+  <details class="evento" data-nombre="observacion general nota comportamiento">
+    <summary>📝 Observación <span class="pill general">general</span> <span class="tag">id 16 · clave: observacion</span> <span class="tag">sin handler</span></summary>
+    <div class="evento-body">
+      <h4>Validaciones / efectos</h4><ul><li>Solo las generales. No cambia nada en el animal.</li></ul>
+      <h4>Columnas dedicadas</h4><p><code>descripcion</code>.</p>
+      <h4>datos_json (DatosObservacion)</h4>
+      <ul><li><code>tipoObservacion</code>: comportamiento | fisica | ambiental | otra · <code>prioridad</code>: baja | media | alta · <code>notas</code></li></ul>
+    </div>
+  </details>
+
+  <details class="evento" data-nombre="traslado general corral rancho movimiento">
+    <summary>🚚 Traslado <span class="pill general">general</span> <span class="tag">id 17 · clave: traslado</span> <span class="tag">🔒 no eliminable</span></summary>
+    <div class="evento-body">
+      <h4>Validaciones</h4>
+      <ul>
+        <li>Animal activo.</li>
+        <li><code>datos_json.destinoCorralId</code> es <strong>obligatorio</strong>.</li>
+        <li>Si es <strong>entre ranchos</strong> (<code>destinoRanchoId</code> distinto al actual):
+          el usuario debe tener rol en el rancho destino y el corral destino debe pertenecer a ese rancho.</li>
+      </ul>
+      <h4>Efectos</h4>
+      <ul>
+        <li>Actualiza <code>animales.corral_id</code> (y <code>rancho_id</code> si es inter-rancho).</li>
+        <li>Crea un registro en <code>animal.movimientos_animal</code> (origen = <code>origenCorralId</code> del JSON o el corral actual antes del cambio).</li>
+        <li class="muted">Inter-rancho: el historial de eventos, agendas y lotes NO se migran automáticamente (operación de backoffice pendiente).</li>
+      </ul>
+      <h4>datos_json (DatosTraslado)</h4>
+      <ul>
+        <li><code>destinoCorralId</code> ⭐ obligatorio · <code>origenCorralId</code>, <code>origenRanchoId</code>, <code>destinoRanchoId</code></li>
+        <li><code>motivo</code>: engorda | pastoreo | venta | cuarentena</li>
+        <li><code>distanciaKm</code> · <code>transporte</code>: camion | pie | remolque · <code>responsable</code> · <code>notas</code></li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="evento" data-nombre="marcaje areteo arete chip tatuaje fierro general">
+    <summary>🏷️ Marcaje / Areteo <span class="pill general">general</span> <span class="tag">id 18 · clave: marcaje</span> <span class="tag">🔒 no eliminable</span></summary>
+    <div class="evento-body">
+      <h4>Validaciones</h4>
+      <ul>
+        <li>Animal activo.</li>
+        <li><code>datos_json.tipoMarca</code> es <strong>obligatorio</strong>: arete | chip | tatuaje | fierro.</li>
+        <li><code>codigoNuevo</code> es obligatorio si tipoMarca es <code>arete</code> o <code>chip</code>.</li>
+        <li>Si es arete: el código nuevo debe ser <strong>único en el rancho</strong> (se permite re-aretar con el mismo código del propio animal).</li>
+      </ul>
+      <h4>Efectos</h4>
+      <ul>
+        <li><code>arete</code> → actualiza <code>animales.codigo_arete</code>.</li>
+        <li><code>chip</code> → actualiza <code>animales.chip_electronico</code>.</li>
+        <li><code>tatuaje</code> / <code>fierro</code> → solo queda en el JSON (no hay columna).</li>
+      </ul>
+      <h4>datos_json (DatosMarcaje)</h4>
+      <ul>
+        <li><code>tipoMarca</code> ⭐ · <code>codigoNuevo</code> (⭐ para arete/chip) · <code>codigoAnterior</code></li>
+        <li><code>ubicacion</code>: oreja_der | oreja_izq | anca | lomo · <code>motivo</code>: ingreso | reemplazo | duplicado · <code>notas</code></li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="evento" data-nombre="muerte general baja necropsia brote">
+    <summary>☠️ Muerte <span class="pill general">general</span> <span class="tag">id 20 · clave: muerte</span> <span class="tag">🔒 no eliminable</span></summary>
+    <div class="evento-body">
+      <h4>Validaciones</h4><ul><li>Animal activo (si ya está inactivo, error: posiblemente ya dado de baja).</li></ul>
+      <h4>Efectos</h4>
+      <ul>
+        <li><strong>Baja del animal</strong>: <code>activo=0</code>, <code>fecha_baja</code>, <code>motivo_baja="muerte"</code> (con <code>causaDetalle</code> como nota).</li>
+        <li>Estado de salud → <strong>muerto</strong>.</li>
+        <li>Lo saca de todos los lotes y <strong>cancela sus agendas futuras</strong>.</li>
+        <li><strong>Alerta de brote:</strong> si la causa es <code>enfermedad</code> y en el mismo corral hay ≥ 2 animales más con enfermedad
+        en los últimos 14 días → se escribe una alerta en el log (pendiente: notificación push/email a veterinarios y admin).</li>
+      </ul>
+      <h4>Columnas dedicadas</h4><p><code>descripcion</code>, <code>veterinario_id</code>.</p>
+      <h4>datos_json (DatosMuerte)</h4>
+      <ul>
+        <li><code>causa</code>: enfermedad | accidente | depredacion | desconocida | sacrificio | parto</li>
+        <li><code>causaDetalle</code> · <code>necropsiaRealizada</code> (bool) · <code>hallazgosNecropsia</code></li>
+        <li><code>lugar</code> · <code>disposicionCadaver</code>: entierro | incineracion | rastro | composta · <code>notas</code></li>
+      </ul>
+    </div>
+  </details>
+
+</section>
+
+<!-- ============================================================ -->
+<section id="agenda">
+  <h2>9. Agenda automática (rancho.agenda)</h2>
+  <p>Los recordatorios que el backend crea solo, sin que el usuario haga nada:</p>
+  <table>
+    <tr><th>Evento que lo dispara</th><th>Recordatorio creado</th><th>Cuándo</th></tr>
+    <tr><td>Vacuna / Desparasitación (con próxima fecha)</td><td>"Refuerzo: …"</td><td>En <code>proximaFecha</code></td></tr>
+    <tr><td>Enfermedad severa</td><td>"Urgente: Revisión por …"</td><td>+2 días</td></tr>
+    <tr><td>Enfermedad moderada</td><td>"Revisión: …"</td><td>+5 días</td></tr>
+    <tr><td>Enfermedad leve / sin severidad</td><td>"Revisión: …"</td><td>+7 días</td></tr>
+    <tr><td>Monta / Inseminación</td><td>"Revisar celo" y "Diagnóstico gestación"</td><td>+21 y +50 días</td></tr>
+    <tr><td>Gestación positiva (con fecha probable)</td><td>"Parto probable" y "Secado"</td><td>Fecha de parto y parto −60 días</td></tr>
+    <tr><td>Gestación negativa</td><td>"Reprogramar servicio"</td><td>+15 días</td></tr>
+    <tr><td>Destete</td><td>"Pesaje post-destete"</td><td>+14 días</td></tr>
+    <tr><td>Tratamiento</td><td>"Dosis i/total" (máx. 30) o "Próxima dosis"</td><td>Cada <code>frecuenciaHoras</code></td></tr>
+    <tr><td>Revisión con próxima fecha</td><td>"Seguimiento: …"</td><td>En <code>proximaFecha</code></td></tr>
+    <tr><td>Muerte / Venta / Aborto</td><td>—</td><td><strong>Cancelan</strong> todas las agendas futuras del animal</td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<section id="endpoints">
+  <h2>10. Endpoints del API</h2>
+  <table>
+    <tr><th>Recurso</th><th>Rutas</th></tr>
+    <tr><td>Auth</td><td><code>POST /api/Auth/registro</code> · <code>login</code> · <code>refresh</code> · <code>logout</code> · <code>GET /api/Auth/me</code></td></tr>
+    <tr><td>Animales</td><td><code>GET/POST /api/Animales</code> · <code>GET/PUT/DELETE /api/Animales/{id}</code> · <code>POST /api/Animales/{id}/baja</code></td></tr>
+    <tr><td>Eventos</td><td><code>GET/POST /api/Eventos</code> · <code>GET/DELETE /api/Eventos/{id}</code> (listar exige <code>ranchoId</code> o <code>animalId</code>; paginado 20, máx. 100)</td></tr>
+    <tr><td>Agenda</td><td><code>GET/POST /api/Agenda</code> · <code>GET/PUT/DELETE /api/Agenda/{id}</code> · <code>POST /api/Agenda/{id}/toggle</code></td></tr>
+    <tr><td>Ranchos</td><td><code>GET/POST /api/Ranchos</code> · <code>GET/PUT/DELETE /api/Ranchos/{id}</code></td></tr>
+    <tr><td>Corrales</td><td><code>GET/POST /api/Corrales</code> · <code>GET/PUT/DELETE /api/Corrales/{id}</code></td></tr>
+    <tr><td>Lotes</td><td><code>GET/POST /api/Lotes</code> · <code>GET/DELETE /api/Lotes/{id}</code> · <code>POST /api/Lotes/{id}/animales</code> · <code>DELETE /api/Lotes/{id}/animales/{animalId}</code></td></tr>
+    <tr><td>Movimientos</td><td><code>GET/POST /api/Movimientos</code> · <code>GET /api/Movimientos/{id}</code> · <code>POST /api/Movimientos/lote</code></td></tr>
+    <tr><td>Fotos</td><td><code>GET/POST /api/fotos-animal</code> · <code>DELETE /api/fotos-animal/{id}</code> · <code>POST …/set-principal</code></td></tr>
+    <tr><td>Vendedores / Veterinarios</td><td>CRUD completo en <code>/api/Vendedores</code> y <code>/api/Veterinarios</code> (por cuenta)</td></tr>
+    <tr><td>Catálogos</td><td><code>GET /api/Catalogos/</code>: especies, razas, propositos, estados-salud, tipos-evento, paises, estados, ciudades, planes, roles</td></tr>
+    <tr><td>Planes</td><td><code>GET/POST /api/cuenta-planes</code> · <code>GET /api/cuenta-planes/activo</code></td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<section id="hallazgos">
+  <h2>11. ✅ Correcciones aplicadas y ⚠️ pendientes</h2>
+
+  <h3>Resuelto (10-jun-2026)</h3>
+  <div class="ok">
+    <strong>✅ Handlers reconectados:</strong> las claves de los 4 handlers que no coincidían con el catálogo ya se corrigieron
+    (<code>monta</code>, <code>inseminacion</code>, <code>revision</code>, <code>tratamiento</code>). Sus validaciones y
+    recordatorios automáticos ya se ejecutan.
+  </div>
+  <div class="ok">
+    <strong>✅ Validación estricta de <code>datos_json</code>:</strong> nuevo <code>DatosJsonValidator</code>. Si el JSON está mal
+    formado, trae campos desconocidos o tipos incorrectos, el evento <strong>no se guarda</strong> y el API devuelve el error.
+    El JSON se almacena normalizado (camelCase, sin nulls).
+  </div>
+  <div class="ok">
+    <strong>✅ Limpieza de catálogo:</strong> se eliminó el tipo duplicado "alta" (id 1002); queda solo <code>alta_medica</code> (id 23).
+    Se eliminaron las columnas <code>emoji</code> de <code>cat.tipos_evento</code> y <code>cat.especies</code> (se usará <code>icono</code> —
+    iconos profesionales en el frontend, no emojis). Se eliminaron los DTOs sin uso <code>DatosAvaluo</code> y <code>DatosEsquila</code>
+    y se agregó <code>DatosNacimiento</code>.
+  </div>
+  <div class="ok">
+    <strong>✅ Alcance de especies:</strong> el sistema trabaja por ahora solo con <strong>bovino</strong> (leche y carne)
+    y <strong>porcino</strong>; son las únicas especies en <code>cat.especies</code> (20 razas bovinas, 5 porcinas).
+  </div>
+
+  <h3>Pendientes</h3>
+  <div class="aviso"><strong>1. Inconsistencia de vocabulario salud/reproducción:</strong> <code>cat.estados_salud</code> tiene
+  <code>prenada</code>, <code>lactancia</code>, <code>secado</code>, pero los handlers manejan eso en <code>estado_reproductivo</code>
+  (gestante, lactante, seca) y nunca ponen esos valores de salud. Hay dos formas de decir lo mismo; conviene quitar los reproductivos de estados_salud.</div>
+
+  <div class="aviso"><strong>2. TODOs en código:</strong>
+    <ul>
+      <li>Alerta de brote (MuerteHandler): falta notificación push/email; hoy solo es un log.</li>
+      <li>Reversión de eventos permanentes (muerte, venta, parto, traslado, marcaje, compra): el mensaje de error la menciona pero no existe aún.</li>
+      <li>Traslado inter-rancho: migración de historial/agendas/lotes pendiente de backoffice.</li>
+      <li>Parto: la consistencia cronológica (parto posterior a la última monta) se confía al frontend.</li>
+      <li>Parto no exige estado "gestante" (a diferencia del aborto) — decidir si endurecer.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>GanControl · Documento de reglas de negocio · Generado a partir del código y la BD el 10-jun-2026.<br>
+Para actualizarlo: edita este HTML directamente, o vuelve a pedir el análisis cuando cambien handlers/catálogos.</footer>
+</main>
+</div>
+
+<script>
+  // Filtro del catálogo de eventos
+  const buscador = document.getElementById('buscador');
+  buscador.addEventListener('input', () => {
+    const q = buscador.value.toLowerCase().trim();
+    document.querySelectorAll('details.evento').forEach(d => {
+      const texto = (d.dataset.nombre + ' ' + d.querySelector('summary').textContent).toLowerCase();
+      d.style.display = !q || texto.includes(q) ? '' : 'none';
+      if (q && texto.includes(q)) d.open = true;
+    });
+  });
+</script>
+</body>
+</html>
