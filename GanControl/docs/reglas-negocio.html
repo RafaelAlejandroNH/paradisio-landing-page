@@ -72,6 +72,7 @@
 <div class="layout">
 <nav>
   <h3>Contenido</h3>
+  <a href="#inicio">0. Levantar el entorno</a>
   <a href="#vision">1. Visión general</a>
   <a href="#bd">2. Base de datos</a>
   <a href="#roles">3. Roles y permisos</a>
@@ -86,6 +87,47 @@
 </nav>
 
 <main>
+
+<!-- ============================================================ -->
+<section id="inicio">
+  <h2>0. Levantar el entorno de desarrollo</h2>
+
+  <p>Para ejecutar todo el sistema de <strong>GanControl</strong> en un ambiente local es necesario iniciar los tres proyectos principales:</p>
+
+  <div class="paso">
+    <div class="num">1</div>
+    <div>
+      <strong>Aplicación móvil (Expo)</strong><br>
+      Abrir una ventana de CMD en la carpeta <code>GanControl.App</code> y ejecutar:
+      <pre><code>npx expo start</code></pre>
+      Este comando inicia el servidor de desarrollo de Expo para la aplicación móvil.
+    </div>
+  </div>
+
+  <div class="paso">
+    <div class="num">2</div>
+    <div>
+      <strong>Aplicación Web (React/Vite)</strong><br>
+      Abrir una ventana de CMD en la carpeta <code>GanControl.Web</code> y ejecutar:
+      <pre><code>npm run dev</code></pre>
+      Este comando inicia el servidor de desarrollo de la aplicación web.
+    </div>
+  </div>
+
+  <div class="paso">
+    <div class="num">3</div>
+    <div>
+      <strong>API Backend (.NET)</strong><br>
+      Abrir una ventana de CMD en la carpeta <code>GanControl.API</code> y ejecutar:
+      <pre><code>dotnet run</code></pre>
+      También puede abrirse la solución en Visual Studio y ejecutarse directamente desde el IDE.
+    </div>
+  </div>
+
+  <div class="ok">
+    <strong>Orden recomendado:</strong> iniciar primero la API, después la aplicación Web y finalmente la aplicación móvil.
+  </div>
+</section>
 
 <!-- ============================================================ -->
 <section id="vision">
@@ -167,11 +209,10 @@
         <tr><td>enfermo</td><td>Enfermo</td></tr>
         <tr><td>en_tratamiento</td><td>En tratamiento</td></tr>
         <tr><td>cuarentena</td><td>En cuarentena</td></tr>
-        <tr><td>prenada</td><td>Preñada</td></tr>
-        <tr><td>lactancia</td><td>En lactancia</td></tr>
-        <tr><td>secado</td><td>En período de secado</td></tr>
         <tr><td>muerto</td><td>Muerto</td></tr>
       </table>
+      <p class="muted">Salud y reproducción no se mezclan: lo reproductivo (gestante, lactante, seca…) vive
+      únicamente en <code>animales.estado_reproductivo</code> — ver sección 6.</p>
       <p class="muted"><code>cat.tipos_evento_especie</code> define qué eventos aplican a cada especie. Hoy: bovino tiene
       todos (incl. ordeña, gestación, inseminación, marcaje); porcino no tiene ordeña, gestación, inseminación ni marcaje.</p>
       <p class="muted"><strong>Alcance actual:</strong> el sistema solo maneja ganado <strong>bovino</strong> (leche y carne)
@@ -787,12 +828,14 @@
     y <strong>porcino</strong>; son las únicas especies en <code>cat.especies</code> (20 razas bovinas, 5 porcinas).
   </div>
 
-  <h3>Pendientes</h3>
-  <div class="aviso"><strong>1. Inconsistencia de vocabulario salud/reproducción:</strong> <code>cat.estados_salud</code> tiene
-  <code>prenada</code>, <code>lactancia</code>, <code>secado</code>, pero los handlers manejan eso en <code>estado_reproductivo</code>
-  (gestante, lactante, seca) y nunca ponen esos valores de salud. Hay dos formas de decir lo mismo; conviene quitar los reproductivos de estados_salud.</div>
+  <div class="ok">
+    <strong>✅ Vocabulario salud/reproducción separado:</strong> se eliminaron <code>prenada</code>, <code>lactancia</code> y
+    <code>secado</code> de <code>cat.estados_salud</code> (ningún animal los usaba). La salud queda con: sano, enfermo,
+    en_tratamiento, cuarentena, muerto. Lo reproductivo vive solo en <code>animales.estado_reproductivo</code>.
+  </div>
 
-  <div class="aviso"><strong>2. TODOs en código:</strong>
+  <h3>Pendientes</h3>
+  <div class="aviso"><strong>1. TODOs en código:</strong>
     <ul>
       <li>Alerta de brote (MuerteHandler): falta notificación push/email; hoy solo es un log.</li>
       <li>Reversión de eventos permanentes (muerte, venta, parto, traslado, marcaje, compra): el mensaje de error la menciona pero no existe aún.</li>
