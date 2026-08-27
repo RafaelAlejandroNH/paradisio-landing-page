@@ -285,11 +285,37 @@
     font-size: .9rem;
   }
   .firma .script { font-size: 2.6rem; display: block; margin-top: .5rem; }
+
+  /* ——— Botón de música ——— */
+  #musica-btn {
+    position: fixed;
+    bottom: 1.2rem;
+    right: 1.2rem;
+    z-index: 10;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    border: 1px solid var(--bruma);
+    background: rgba(58, 31, 46, .85);
+    color: var(--rosa);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .25s ease, border-color .25s ease;
+    backdrop-filter: blur(6px);
+  }
+  #musica-btn:hover, #musica-btn:focus-visible { transform: scale(1.1); border-color: var(--rosa); }
+  #musica-btn:focus-visible { outline: 2px solid var(--crema); outline-offset: 2px; }
 </style>
 </head>
 <body>
 
 <canvas id="petalos" aria-hidden="true"></canvas>
+
+<audio id="cancion" src="Those_Eyes_-_New_West_(mp3.pm).mp3" loop preload="auto"></audio>
+<button id="musica-btn" type="button" aria-label="Pausar o reproducir la música" title="Nuestra canción 🎵">♪</button>
 
 <main>
   <header class="portada">
@@ -374,6 +400,56 @@
 </footer>
 
 <script>
+  // ——— Música de fondo: "Those Eyes" ———
+  // Intenta sonar sola al entrar; si el navegador bloquea el autoplay,
+  // arranca con la primera interacción (tocar, clic, tecla o scroll).
+  const cancion = document.getElementById("cancion");
+  const musicaBtn = document.getElementById("musica-btn");
+  cancion.volume = 0;
+  const VOLUMEN = 0.6;
+
+  function fadeIn() {
+    const paso = () => {
+      if (cancion.volume < VOLUMEN - 0.02) {
+        cancion.volume = Math.min(VOLUMEN, cancion.volume + 0.02);
+        setTimeout(paso, 100);
+      } else {
+        cancion.volume = VOLUMEN;
+      }
+    };
+    paso();
+  }
+
+  function actualizarBoton() {
+    musicaBtn.textContent = cancion.paused ? "♪" : "❚❚";
+  }
+
+  function intentarReproducir() {
+    cancion.play().then(() => {
+      fadeIn();
+      actualizarBoton();
+      quitarEscuchas();
+    }).catch(() => { /* autoplay bloqueado: esperamos interacción */ });
+  }
+
+  const eventos = ["pointerdown", "touchstart", "keydown", "scroll"];
+  function alPrimerToque() { intentarReproducir(); }
+  function quitarEscuchas() {
+    eventos.forEach(ev => window.removeEventListener(ev, alPrimerToque));
+  }
+  eventos.forEach(ev => window.addEventListener(ev, alPrimerToque, { passive: true }));
+  intentarReproducir();
+
+  musicaBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (cancion.paused) {
+      cancion.play().then(() => { fadeIn(); actualizarBoton(); quitarEscuchas(); });
+    } else {
+      cancion.pause();
+      actualizarBoton();
+    }
+  });
+
   // Revelado suave al hacer scroll
   const observador = new IntersectionObserver((entradas) => {
     for (const e of entradas) {
