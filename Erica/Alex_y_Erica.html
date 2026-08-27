@@ -67,6 +67,7 @@
   .revelar.visible .escalonado > *:nth-child(4) { transition-delay: .75s; }
   .revelar.visible .escalonado > *:nth-child(5) { transition-delay: .95s; }
   .revelar.visible .escalonado > *:nth-child(6) { transition-delay: 1.15s; }
+  .revelar.visible .escalonado > *:nth-child(7) { transition-delay: 1.35s; }
   .revelar.visible .escalonado > * { opacity: 1; transform: none; }
 
   @media (prefers-reduced-motion: reduce) {
@@ -74,8 +75,10 @@
     html { scroll-behavior: auto; }
   }
 
-  /* ——— Portada con secuencia de entrada ——— */
+  /* ——— Portada con secuencia de entrada y foto de fondo ——— */
   .portada {
+    position: relative;
+    isolation: isolate;
     min-height: 100svh;
     display: flex;
     flex-direction: column;
@@ -84,7 +87,25 @@
     text-align: center;
     padding: 2rem 1.5rem;
     gap: 1.2rem;
+    overflow: hidden;
   }
+  .portada::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      linear-gradient(180deg, rgba(36,18,32,.88) 0%, rgba(43,22,34,.78) 45%, rgba(43,22,34,.86) 80%, #2B1622 100%),
+      url("Fotos/mini/IMG_1478_med.jpg");
+    background-size: cover;
+    background-position: center 30%;
+    animation: acercar 14s ease-out forwards;
+  }
+  @keyframes acercar {
+    from { transform: scale(1.12); }
+    to { transform: scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce) { .portada::before { animation: none; } }
   @keyframes entrada {
     from { opacity: 0; transform: translateY(1.4rem); filter: blur(5px); }
     to   { opacity: 1; transform: none; filter: none; }
@@ -184,6 +205,87 @@
     margin: 0 auto;
   }
 
+  /* ——— Tira de polaroids que se desliza sola ——— */
+  .tira {
+    overflow: hidden;
+    padding: 2.5rem 0;
+    position: relative;
+  }
+  .tira-pista {
+    display: flex;
+    gap: 1.2rem;
+    width: max-content;
+    animation: deslizar 55s linear infinite;
+  }
+  @keyframes deslizar {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .polaroid {
+    background: var(--crema);
+    padding: .5rem .5rem 1.6rem;
+    border-radius: .2rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,.35);
+    flex-shrink: 0;
+  }
+  .polaroid img {
+    width: 8.5rem;
+    height: 10rem;
+    object-fit: cover;
+    display: block;
+  }
+  .tira-pista .polaroid:nth-child(odd) { transform: rotate(-3deg); }
+  .tira-pista .polaroid:nth-child(even) { transform: rotate(2.5deg); }
+  .tira-pista .polaroid:nth-child(3n) { transform: rotate(1deg) translateY(6px); }
+  @media (prefers-reduced-motion: reduce) {
+    .tira { overflow-x: auto; }
+    .tira-pista { animation: none; }
+  }
+
+  /* ——— Muro de recuerdos ——— */
+  .muro {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .5rem;
+    margin-top: 1.8rem;
+  }
+  .muro img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: .4rem;
+    display: block;
+    border: 1px solid var(--bruma);
+    transition: transform .3s ease;
+  }
+  .muro img:hover { transform: scale(1.04); }
+  .muro img.grande {
+    grid-column: span 2;
+    grid-row: span 2;
+    aspect-ratio: 1;
+  }
+
+  /* ——— Video del futuro ——— */
+  .marco-video {
+    margin-top: 1.8rem;
+    border-radius: .6rem;
+    padding: .35rem;
+    background: linear-gradient(135deg, var(--rosa), var(--oro));
+    box-shadow: 0 12px 40px rgba(232, 160, 180, .2);
+  }
+  .marco-video video, .marco-video img {
+    width: 100%;
+    display: block;
+    border-radius: .4rem;
+  }
+  .pie-foto {
+    text-align: center;
+    font-size: .95rem;
+    color: var(--oro);
+    font-style: italic;
+    margin-top: .8rem;
+  }
+
   /* ——— Lo que amo de ti ——— */
   .lista-amor {
     list-style: none;
@@ -204,6 +306,7 @@
     transform: translateX(6px);
     border-color: var(--rosa);
   }
+  .lista-amor li strong { color: var(--crema); font-weight: 500; }
   .lista-amor li::before {
     content: "❦";
     color: var(--rosa);
@@ -322,7 +425,7 @@
   <header class="portada">
     <div class="script">Para ti, Erica</div>
     <h1>Antes de cualquier palabra: te amo. Y sigo aquí.</h1>
-    <p>Sé que estos días han sido grises. Hice esta página solo para ti, porque quiero que leas, con calma, lo que hay en mi corazón.<br><span class="nota-c">— Y sí: Erica con C. Como debe ser. 😌</span></p>
+    <p>Sé que estos días han sido grises, repostera guapa. Hice esta página solo para ti, porque quiero que leas, con calma, lo que hay en mi corazón.<br><span class="nota-c">— Y sí: Erica con C. Como debe ser. 😌</span></p>
     <div class="indicador">Desliza hacia abajo ↓</div>
   </header>
 
@@ -335,6 +438,29 @@
     <p>Mi amor no es perfecto — es <em>verdadero</em>. Y prefiero mil veces darte un amor verdadero que uno perfecto de mentiras. Te quiero con mis errores y mis ganas de ser mejor, y te quiero <strong>para toda mi vida</strong>. No por un rato, no mientras sea fácil: toda la vida.</p>
   </section>
 
+  <div class="tira revelar" aria-label="Fotos de nosotros">
+    <div class="tira-pista" id="tira-pista">
+      <div class="polaroid"><img src="Fotos/mini/IMG_0556.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos/mini/202c5139-69df-4818-8df9-98b812b2b3fe.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos/mini/IMG_1901.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos/mini/25bc2f8c-c9e5-4fee-b29d-acac11a9fe94.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos/mini/IMG_3450.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos/mini/3c909b21-fb4c-41ba-83b5-fbaa460e7d11.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos/mini/IMG_5195.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos/mini/4fe06694-9aac-43ad-bccb-82094e934972.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos/mini/IMG_7072.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos/mini/62059651-299e-48f9-9edf-e09bdb5d7680.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos/mini/IMG_8102.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos/mini/89793788-2d3d-490d-b498-24c47f1047ed.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos/mini/IMG_1167.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos/mini/a59294e1-b2c6-4ff9-b83a-f958cbbbecf0.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos/mini/IMG_3719.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos/mini/df76bfd4-74bf-46cd-9ddc-76d67543ff36.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos/mini/IMG_5980.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos/mini/IMG_9118.jpg" alt="" loading="lazy"></div>
+    </div>
+  </div>
+
   <section class="seccion revelar">
     <div class="etiqueta">Tu corazón</div>
     <h2>Tienes derecho a estar dolida. No te apures.</h2>
@@ -346,10 +472,11 @@
     <div class="etiqueta">Lo que amo de ti</div>
     <h2>Por si el mundo te hizo dudar, te lo recuerdo.</h2>
     <ul class="lista-amor escalonado">
+      <li><strong>Tu sonrisa.</strong> Empiezo por ahí porque es lo que más amo de ti: cuando sonríes, el mundo entero se me acomoda.</li>
+      <li>Tus rizos. Cada uno de esos chinos que tienes me encanta — podría pasarme la vida contándolos.</li>
+      <li>Verte en tu pastelería siendo <em>la repostera más linda</em>, haciendo los pasteles más ricos que existen. Nadie los hace como tú.</li>
       <li>Tu forma de querer: entregada, real, sin medias tintas.</li>
-      <li>Tu risa, que hace que cualquier día malo se vuelva pequeño.</li>
       <li>Tu fuerza, incluso ahora, cuando estás triste y sigues de pie.</li>
-      <li>La paz que siento cuando estamos juntos, sin necesidad de nada más.</li>
       <li>Esa carita que pones cuando te digo &laquo;Erika&raquo; con K... perdón, con C. Con C. 🌹</li>
       <li>Que a pesar de todo, elegiste volver. Eso es valentía, y es amor.</li>
     </ul>
@@ -375,10 +502,48 @@
   </section>
 
   <section class="seccion revelar">
+    <div class="etiqueta">Nuestros momentos</div>
+    <h2>Mira todo lo que ya construimos.</h2>
+    <p>Cada una de estas fotos es un día que elegimos estar juntos. Y apenas vamos empezando.</p>
+    <div class="muro">
+      <img class="grande" src="Fotos/mini/IMG_5378.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_0838.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_1014.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_1366.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_1729.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_1905.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_1908.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_3060.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_3163.jpg" alt="" loading="lazy">
+      <img class="grande" src="Fotos/mini/IMG_1478.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_3574.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_3642.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_3861.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_4205.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_4739.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_4815.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_5201.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_5256.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_5313.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_5531.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_5598.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_7119.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_7243.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_7248.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_7426.jpg" alt="" loading="lazy">
+      <img src="Fotos/mini/IMG_7501.jpg" alt="" loading="lazy">
+    </div>
+  </section>
+
+  <section class="seccion revelar">
     <div class="etiqueta">Nuestro mañana</div>
     <h2>Un día, una familia bonita. La nuestra.</h2>
     <p>Cierro los ojos y lo veo clarito: una casa con olor a café por la mañana, risas en la cocina, planes de domingo. Erica y Rafael, más viejos y más fuertes, contando esta época como aquella tormenta que no pudo con nosotros.</p>
     <p>Y un día, si la vida nos lo regala, <strong>una familia bonita</strong> — hijos que hereden tu risa y tu corazón. Ese es el futuro por el que hoy te pido caminar juntos, paso a paso, sin prisa pero sin soltarnos.</p>
+    <div class="marco-video">
+      <video id="video-recuerdo" src="Fotos/IMG_8461.MP4" muted loop playsinline preload="metadata"></video>
+    </div>
+    <p class="pie-foto">Así de bonito se ve nuestro para siempre.</p>
   </section>
 
   <hr class="linea">
@@ -459,6 +624,19 @@
   }, { threshold: 0.15 });
   document.querySelectorAll(".revelar").forEach(el => observador.observe(el));
 
+  // Tira de polaroids: se duplica el contenido para que el bucle sea continuo
+  const pista = document.getElementById("tira-pista");
+  pista.innerHTML += pista.innerHTML;
+
+  // El video arranca solo cuando entra a la pantalla (va en silencio, con la cancion de fondo)
+  const video = document.getElementById("video-recuerdo");
+  new IntersectionObserver((entradas, obs) => {
+    for (const e of entradas) {
+      if (e.isIntersecting) { video.play().catch(() => {}); }
+      else { video.pause(); }
+    }
+  }, { threshold: 0.3 }).observe(video);
+
   // Pétalos de rosa cayendo (ligero, respeta reduced-motion)
   const lienzo = document.getElementById("petalos");
   const ctx = lienzo.getContext("2d");
@@ -500,6 +678,54 @@
     ctx.restore();
   }
 
+  // ——— Fotos chiquitas que flotan entre los petalos ———
+  const fotosFlotantes = [
+    "IMG_7832.jpg", "IMG_7916.jpg", "IMG_7986.jpg", "IMG_8106.jpg", "IMG_8122.jpg",
+    "IMG_8141.jpg", "IMG_8384.jpg", "IMG_8401.jpg", "IMG_8696.jpg", "IMG_9322.jpg"
+  ].map(n => { const im = new Image(); im.src = "Fotos/mini/" + n; return im; });
+  let medallones = [];
+
+  function nuevoMedallon() {
+    return {
+      img: fotosFlotantes[Math.floor(Math.random() * fotosFlotantes.length)],
+      x: 30 + Math.random() * (window.innerWidth - 60),
+      y: -60,
+      radio: 26 + Math.random() * 12,
+      velY: 0.35 + Math.random() * 0.4,
+      giro: -0.15 + Math.random() * 0.3,
+      velGiro: -0.004 + Math.random() * 0.008,
+      fase: Math.random() * Math.PI * 2
+    };
+  }
+
+  function dibujarMedallon(m) {
+    if (!m.img.complete || !m.img.naturalWidth) return;
+    ctx.save();
+    ctx.translate(m.x + Math.sin(m.y / 90 + m.fase) * 14, m.y);
+    ctx.rotate(m.giro);
+    ctx.beginPath();
+    ctx.arc(0, 0, m.radio, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.save();
+    ctx.clip();
+    const lado = Math.min(m.img.naturalWidth, m.img.naturalHeight);
+    ctx.drawImage(m.img,
+      (m.img.naturalWidth - lado) / 2, (m.img.naturalHeight - lado) / 2, lado, lado,
+      -m.radio, -m.radio, m.radio * 2, m.radio * 2);
+    ctx.restore();
+    ctx.strokeStyle = "rgba(232, 160, 180, .8)";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Cada cierto tiempo entra una foto flotando (maximo 3 a la vez)
+  if (!reduceMotion) {
+    setInterval(() => {
+      if (medallones.length < 3) medallones.push(nuevoMedallon());
+    }, 7000);
+  }
+
   function animar() {
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     for (const p of petalos) {
@@ -509,6 +735,12 @@
       if (p.y > window.innerHeight + 30) Object.assign(p, nuevoPetalo(true));
       dibujarPetalo(p);
     }
+    for (const m of medallones) {
+      m.y += m.velY;
+      m.giro += m.velGiro;
+      dibujarMedallon(m);
+    }
+    medallones = medallones.filter(m => m.y < window.innerHeight + 80);
     if (!reduceMotion) requestAnimationFrame(animar);
   }
   if (!reduceMotion) animar();
@@ -520,14 +752,22 @@
     this.style.opacity = "0.6";
     this.textContent = "Juntos, siempre 💛";
     if (!reduceMotion) {
-      for (let i = 0; i < 60; i++) {
+      // Lluvia intensa de petalos en varias oleadas
+      for (let i = 0; i < 250; i++) {
         const p = nuevoPetalo(true);
-        p.y = -Math.random() * window.innerHeight * 0.8;
-        p.velY += 0.6;
+        p.y = -Math.random() * window.innerHeight * 2.5;
+        p.velY += 0.5 + Math.random() * 1.2;
         petalos.push(p);
       }
-      // Volver a la calma después de la lluvia
-      setTimeout(() => { petalos = petalos.slice(0, 20); }, 15000);
+      // Y una lluvia de fotos de los dos entre los petalos
+      for (let i = 0; i < 8; i++) {
+        const m = nuevoMedallon();
+        m.y = -80 - Math.random() * window.innerHeight * 1.5;
+        m.velY += 0.5;
+        medallones.push(m);
+      }
+      // Volver a la calma despues de la lluvia
+      setTimeout(() => { petalos = petalos.slice(0, 20); }, 25000);
     }
   });
 </script>
