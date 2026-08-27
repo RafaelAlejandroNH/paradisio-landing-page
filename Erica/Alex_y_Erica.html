@@ -207,19 +207,17 @@
 
   /* ——— Tira de polaroids que se desliza sola ——— */
   .tira {
-    overflow: hidden;
+    overflow-x: auto;
     padding: 2.5rem 0;
     position: relative;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
   }
+  .tira::-webkit-scrollbar { display: none; }
   .tira-pista {
     display: flex;
     gap: 1.2rem;
     width: max-content;
-    animation: deslizar 55s linear infinite;
-  }
-  @keyframes deslizar {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
   }
   .polaroid {
     background: var(--crema);
@@ -233,14 +231,12 @@
     height: 10rem;
     object-fit: cover;
     display: block;
+    -webkit-user-drag: none;
+    user-select: none;
   }
   .tira-pista .polaroid:nth-child(odd) { transform: rotate(-3deg); }
   .tira-pista .polaroid:nth-child(even) { transform: rotate(2.5deg); }
   .tira-pista .polaroid:nth-child(3n) { transform: rotate(1deg) translateY(6px); }
-  @media (prefers-reduced-motion: reduce) {
-    .tira { overflow-x: auto; }
-    .tira-pista { animation: none; }
-  }
 
   /* ——— Muro de recuerdos ——— */
   .muro {
@@ -554,8 +550,8 @@
     <h2>No son palabras al aire. Son mi compromiso contigo.</h2>
     <div class="promesas escalonado">
       <div class="promesa">
-        <h3>Verdad, siempre</h3>
-        <p>Mi puerta está abierta para ti, siempre. Pregúntame lo que sea, cuando sea. De mí siempre tendrás la verdad de frente.</p>
+        <h3>Un solo equipo</h3>
+        <p>Sé que tengo defectos — tú me los has hecho ver, y en vez de molestarme, te lo agradezco: nadie me conoce como tú. Voy a cambiarlos, pero ayúdame a lograrlo. Ayudémonos a ser mejores, tú y yo. Quiero que seamos uno solo: un equipo que no se suelta.</p>
       </div>
       <div class="promesa">
         <h3>Cuidar lo nuestro</h3>
@@ -694,9 +690,42 @@
   }, { threshold: 0.15 });
   document.querySelectorAll(".revelar").forEach(el => observador.observe(el));
 
-  // Tira de polaroids: se duplica el contenido para que el bucle sea continuo
+  // Tira de polaroids: se puede mover con el dedo en ambos sentidos (con inercia)
+  // y al soltarla retoma sola su paseo. El contenido va triplicado y el scroll
+  // se mantiene en la copia de en medio para que el bucle sea infinito.
   const pista = document.getElementById("tira-pista");
-  pista.innerHTML += pista.innerHTML;
+  const contenidoTira = pista.innerHTML;
+  pista.innerHTML = contenidoTira + contenidoTira + contenidoTira;
+  const tira = document.querySelector(".tira");
+  let autoTira = !reduceMotion;
+  let timerTira = null;
+
+  function pausarTira() {
+    autoTira = false;
+    clearTimeout(timerTira);
+    timerTira = setTimeout(() => { autoTira = !reduceMotion; }, 2000);
+  }
+  tira.addEventListener("pointerdown", pausarTira, { passive: true });
+  tira.addEventListener("touchmove", pausarTira, { passive: true });
+  tira.addEventListener("wheel", pausarTira, { passive: true });
+
+  let posTira = 0;
+  function pasoTira() {
+    const W = pista.scrollWidth / 3;
+    if (W > 0) {
+      // Mientras ella la mueve, mandamos su posicion; solo escribimos
+      // cuando avanza en automatico o al dar la vuelta del bucle
+      if (!autoTira) posTira = tira.scrollLeft;
+      else if (Math.abs(tira.scrollLeft - posTira) > 1.5) posTira = tira.scrollLeft;
+      let escribir = autoTira;
+      if (posTira < W * 0.5) { posTira += W; escribir = true; }
+      else if (posTira >= W * 1.5) { posTira -= W; escribir = true; }
+      if (autoTira) posTira += 0.7;
+      if (escribir) tira.scrollLeft = posTira;
+    }
+    requestAnimationFrame(pasoTira);
+  }
+  requestAnimationFrame(() => { posTira = pista.scrollWidth / 3; pasoTira(); });
 
   // El video arranca solo cuando entra a la pantalla (va en silencio, con la cancion de fondo)
   const video = document.getElementById("video-recuerdo");
