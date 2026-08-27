@@ -632,6 +632,8 @@
 </footer>
 
 <script>
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   // ——— Música de fondo: "Those Eyes" ———
   // Intenta sonar sola al entrar; si el navegador bloquea el autoplay,
   // arranca con la primera interacción (tocar, clic, tecla o scroll).
@@ -739,7 +741,6 @@
   // Pétalos de rosa cayendo (ligero, respeta reduced-motion)
   const lienzo = document.getElementById("petalos");
   const ctx = lienzo.getContext("2d");
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let petalos = [];
   const intensidad = reduceMotion ? 0 : 14;
 
