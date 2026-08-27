@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para ti, Erica</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌹</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Great+Vibes&family=Figtree:wght@300;400;500&display=swap">
+<style>
+  /* Un solo mundo visual, deliberado: un atardecer cálido después de la tormenta. */
+  :root {
+    --noche: #2B1622;        /* vino profundo, el cielo al fondo */
+    --noche-suave: #3A1F2E;  /* superficie de tarjetas */
+    --bruma: #4E2B3D;        /* bordes y separadores */
+    --crema: #F7EAE3;        /* texto principal */
+    --crema-tenue: #D9BFC0;  /* texto secundario */
+    --rosa: #E8A0B4;         /* acento: pétalos, títulos */
+    --oro: #D9B98A;          /* acento secundario: detalles, líneas */
+    --paso: clamp(4rem, 10vh, 7rem);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--noche);
+    background-image: linear-gradient(180deg, #241220 0%, #2B1622 30%, #3A1D2A 70%, #4A2433 100%);
+    background-attachment: fixed;
+    color: var(--crema);
+    font-family: "Figtree", "Segoe UI", system-ui, sans-serif;
+    font-weight: 300;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+  #petalos {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  main { position: relative; z-index: 1; }
+
+  .seccion {
+    max-width: 38rem;
+    margin: 0 auto;
+    padding: var(--paso) 1.5rem;
+  }
+
+  /* ——— Revelado al hacer scroll (con desenfoque suave) ——— */
+  .revelar {
+    opacity: 0;
+    transform: translateY(1.5rem);
+    filter: blur(6px);
+    transition: opacity 1.1s ease, transform 1.1s ease, filter 1.1s ease;
+  }
+  .revelar.visible { opacity: 1; transform: none; filter: none; }
+
+  /* Hijos escalonados: cada elemento entra un poco después que el anterior */
+  .escalonado > * {
+    opacity: 0;
+    transform: translateY(1rem);
+    transition: opacity .9s ease, transform .9s ease;
+  }
+  .revelar.visible .escalonado > *:nth-child(1) { transition-delay: .15s; }
+  .revelar.visible .escalonado > *:nth-child(2) { transition-delay: .35s; }
+  .revelar.visible .escalonado > *:nth-child(3) { transition-delay: .55s; }
+  .revelar.visible .escalonado > *:nth-child(4) { transition-delay: .75s; }
+  .revelar.visible .escalonado > *:nth-child(5) { transition-delay: .95s; }
+  .revelar.visible .escalonado > *:nth-child(6) { transition-delay: 1.15s; }
+  .revelar.visible .escalonado > * { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .revelar, .escalonado > * { opacity: 1; transform: none; filter: none; transition: none; }
+    html { scroll-behavior: auto; }
+  }
+
+  /* ——— Portada con secuencia de entrada ——— */
+  .portada {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    gap: 1.2rem;
+  }
+  @keyframes entrada {
+    from { opacity: 0; transform: translateY(1.4rem); filter: blur(5px); }
+    to   { opacity: 1; transform: none; filter: none; }
+  }
+  .portada > * {
+    opacity: 0;
+    animation: entrada 1.3s ease forwards;
+  }
+  .portada > *:nth-child(1) { animation-delay: .3s; }
+  .portada > *:nth-child(2) { animation-delay: .9s; }
+  .portada > *:nth-child(3) { animation-delay: 1.5s; }
+  .portada > *:nth-child(4) { animation-delay: 2.3s; }
+  @media (prefers-reduced-motion: reduce) {
+    .portada > * { animation: none; opacity: 1; }
+  }
+
+  /* ——— Letra script con brillo que la recorre ——— */
+  .script {
+    font-family: "Great Vibes", cursive;
+    font-size: clamp(2.6rem, 8vw, 4rem);
+    line-height: 1.2;
+    background: linear-gradient(110deg,
+      var(--rosa) 0%, var(--rosa) 40%,
+      #FBD9C9 50%,
+      var(--rosa) 60%, var(--rosa) 100%);
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: var(--rosa); /* respaldo por si background-clip no existe */
+    animation: destello 6s ease-in-out infinite;
+  }
+  @keyframes destello {
+    0%, 100% { background-position: 100% 0; }
+    50% { background-position: 0 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { .script { animation: none; } }
+
+  .portada h1 {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(1.9rem, 5.5vw, 3rem);
+    line-height: 1.25;
+    text-wrap: balance;
+    max-width: 22ch;
+  }
+  .portada p {
+    color: var(--crema-tenue);
+    max-width: 40ch;
+    font-size: 1.05rem;
+  }
+  .nota-c {
+    font-size: .9rem;
+    color: var(--oro);
+    font-style: italic;
+  }
+  .indicador {
+    margin-top: 2.5rem;
+    color: var(--oro);
+    font-size: .8rem;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    animation: entrada 1.3s ease 2.3s forwards, latir 2.4s ease-in-out 3.6s infinite;
+  }
+  @keyframes latir {
+    0%, 100% { opacity: .5; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(6px); }
+  }
+  @media (prefers-reduced-motion: reduce) { .indicador { animation: none; opacity: 1; } }
+
+  /* ——— Tipografía de secciones ——— */
+  .etiqueta {
+    font-size: .75rem;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--oro);
+    margin-bottom: 1rem;
+  }
+  h2 {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(1.7rem, 4.5vw, 2.4rem);
+    line-height: 1.25;
+    text-wrap: balance;
+    margin-bottom: 1.5rem;
+  }
+  .seccion p + p { margin-top: 1.1rem; }
+  .seccion p { color: var(--crema-tenue); }
+  .seccion p strong { color: var(--crema); font-weight: 500; }
+  em { font-style: italic; color: var(--rosa); }
+
+  .linea {
+    width: 3.5rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--oro), transparent);
+    border: none;
+    margin: 0 auto;
+  }
+
+  /* ——— Lo que amo de ti ——— */
+  .lista-amor {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.8rem;
+  }
+  .lista-amor li {
+    background: var(--noche-suave);
+    border: 1px solid var(--bruma);
+    border-radius: .4rem;
+    padding: 1.1rem 1.3rem;
+    color: var(--crema-tenue);
+    transition: transform .3s ease, border-color .3s ease;
+  }
+  .lista-amor li:hover {
+    transform: translateX(6px);
+    border-color: var(--rosa);
+  }
+  .lista-amor li::before {
+    content: "❦";
+    color: var(--rosa);
+    margin-right: .7rem;
+  }
+
+  /* ——— Promesas ——— */
+  .promesas {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    margin-top: 1.8rem;
+  }
+  .promesa {
+    border-left: 2px solid var(--rosa);
+    padding-left: 1.2rem;
+    transition: border-color .3s ease;
+  }
+  .promesa:hover { border-color: var(--oro); }
+  .promesa h3 {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: var(--crema);
+    margin-bottom: .3rem;
+  }
+  .promesa p { color: var(--crema-tenue); font-size: .98rem; }
+
+  /* ——— Final ——— */
+  .final {
+    text-align: center;
+    min-height: 70svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.4rem;
+    padding-bottom: 8rem;
+  }
+  .final p { color: var(--crema-tenue); max-width: 44ch; }
+  #boton-si {
+    font-family: "Figtree", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: .05em;
+    color: var(--noche);
+    background: linear-gradient(135deg, var(--rosa), var(--oro));
+    border: none;
+    border-radius: 999px;
+    padding: 1rem 2.4rem;
+    cursor: pointer;
+    transition: transform .25s ease, box-shadow .25s ease;
+    box-shadow: 0 4px 24px rgba(232, 160, 180, .25);
+    animation: resplandor 3s ease-in-out infinite;
+  }
+  @keyframes resplandor {
+    0%, 100% { box-shadow: 0 4px 24px rgba(232, 160, 180, .25); }
+    50% { box-shadow: 0 4px 38px rgba(232, 160, 180, .5); }
+  }
+  #boton-si:hover, #boton-si:focus-visible {
+    transform: translateY(-2px) scale(1.03);
+  }
+  #boton-si:focus-visible { outline: 2px solid var(--crema); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { #boton-si { animation: none; } }
+
+  #respuesta {
+    opacity: 0;
+    transform: translateY(1rem);
+    transition: opacity 1.5s ease, transform 1.5s ease;
+    max-width: 44ch;
+  }
+  #respuesta.mostrar { opacity: 1; transform: none; }
+  #respuesta .script { font-size: clamp(2.2rem, 7vw, 3.2rem); }
+  #respuesta p { margin-top: .8rem; }
+
+  .firma {
+    text-align: center;
+    padding: 0 1.5rem 4rem;
+    color: var(--crema-tenue);
+    font-size: .9rem;
+  }
+  .firma .script { font-size: 2.6rem; display: block; margin-top: .5rem; }
+</style>
+</head>
+<body>
+
+<canvas id="petalos" aria-hidden="true"></canvas>
+
+<main>
+  <header class="portada">
+    <div class="script">Para ti, Erica</div>
+    <h1>Antes de cualquier palabra: te amo. Y sigo aquí.</h1>
+    <p>Sé que estos días han sido grises. Hice esta página solo para ti, porque quiero que leas, con calma, lo que hay en mi corazón.<br><span class="nota-c">— Y sí: Erica con C. Como debe ser. 😌</span></p>
+    <div class="indicador">Desliza hacia abajo ↓</div>
+  </header>
+
+  <hr class="linea">
+
+  <section class="seccion revelar">
+    <div class="etiqueta">Con el corazón en la mano</div>
+    <h2>No soy perfecto. Pero te amo de verdad.</h2>
+    <p>No voy a venderte un cuento de hombre perfecto, porque no lo soy. Me equivoco, tengo defectos, y a veces no encuentro las palabras correctas. Pero hay algo que nunca ha sido mentira y nunca lo será: <strong>lo que siento por ti es real</strong>.</p>
+    <p>Mi amor no es perfecto — es <em>verdadero</em>. Y prefiero mil veces darte un amor verdadero que uno perfecto de mentiras. Te quiero con mis errores y mis ganas de ser mejor, y te quiero <strong>para toda mi vida</strong>. No por un rato, no mientras sea fácil: toda la vida.</p>
+  </section>
+
+  <section class="seccion revelar">
+    <div class="etiqueta">Tu corazón</div>
+    <h2>Tienes derecho a estar dolida. No te apures.</h2>
+    <p>No vengo a pedirte que sonrías de inmediato, ni a fingir que no pasó nada. Tu tristeza es válida, y yo la respeto. Solo quiero que sepas que <strong>no vas a atravesarla sola</strong>.</p>
+    <p>Voy a estar aquí en tus días serios y en tus días tristes, con la misma paciencia con la que espero tus días de risa. Porque te quiero completa, Erica: con tu alegría y también con tus heridas.</p>
+  </section>
+
+  <section class="seccion revelar">
+    <div class="etiqueta">Lo que amo de ti</div>
+    <h2>Por si el mundo te hizo dudar, te lo recuerdo.</h2>
+    <ul class="lista-amor escalonado">
+      <li>Tu forma de querer: entregada, real, sin medias tintas.</li>
+      <li>Tu risa, que hace que cualquier día malo se vuelva pequeño.</li>
+      <li>Tu fuerza, incluso ahora, cuando estás triste y sigues de pie.</li>
+      <li>La paz que siento cuando estamos juntos, sin necesidad de nada más.</li>
+      <li>Esa carita que pones cuando te digo &laquo;Erika&raquo; con K... perdón, con C. Con C. 🌹</li>
+      <li>Que a pesar de todo, elegiste volver. Eso es valentía, y es amor.</li>
+    </ul>
+  </section>
+
+  <section class="seccion revelar">
+    <div class="etiqueta">Mis promesas</div>
+    <h2>No son palabras al aire. Son mi compromiso contigo.</h2>
+    <div class="promesas escalonado">
+      <div class="promesa">
+        <h3>Verdad, siempre</h3>
+        <p>Mi puerta está abierta para ti, siempre. Pregúntame lo que sea, cuando sea. De mí siempre tendrás la verdad de frente.</p>
+      </div>
+      <div class="promesa">
+        <h3>Cuidar lo nuestro</h3>
+        <p>Lo que construimos no se defiende con gritos, se defiende con hechos. Voy a demostrarte cada día que lo nuestro vale más que lo que digan afuera.</p>
+      </div>
+      <div class="promesa">
+        <h3>Tu paz primero</h3>
+        <p>Quiero ser el lugar donde descansas, no una razón más de preocupación. Trabajaré para que conmigo siempre sientas tranquilidad.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion revelar">
+    <div class="etiqueta">Nuestro mañana</div>
+    <h2>Un día, una familia bonita. La nuestra.</h2>
+    <p>Cierro los ojos y lo veo clarito: una casa con olor a café por la mañana, risas en la cocina, planes de domingo. Erica y Rafael, más viejos y más fuertes, contando esta época como aquella tormenta que no pudo con nosotros.</p>
+    <p>Y un día, si la vida nos lo regala, <strong>una familia bonita</strong> — hijos que hereden tu risa y tu corazón. Ese es el futuro por el que hoy te pido caminar juntos, paso a paso, sin prisa pero sin soltarnos.</p>
+  </section>
+
+  <hr class="linea">
+
+  <section class="seccion final revelar">
+    <div class="script">Una sola pregunta</div>
+    <h2>¿Seguimos construyendo esto juntos?</h2>
+    <p>No te pido un amor perfecto, porque yo tampoco puedo darlo. Te pido un amor de verdad, como el que yo te tengo: para toda mi vida. No tienes que responder con palabras — solo toca el botón, y deja que esta página te diga lo que siento.</p>
+    <button id="boton-si" type="button">Sí, juntos 🌹</button>
+    <div id="respuesta" aria-live="polite">
+      <div class="script">Gracias por elegirnos</div>
+      <p>Cada pétalo que ves caer es un &laquo;te amo&raquo; que no me alcanza la voz para decirte. Hoy empieza el siguiente capítulo de Erica y Rafael.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="firma">
+  No soy perfecto, pero te amo de verdad — hoy, mañana y toda mi vida.
+  <span class="script">Rafael</span>
+</footer>
+
+<script>
+  // Revelado suave al hacer scroll
+  const observador = new IntersectionObserver((entradas) => {
+    for (const e of entradas) {
+      if (e.isIntersecting) { e.target.classList.add("visible"); observador.unobserve(e.target); }
+    }
+  }, { threshold: 0.15 });
+  document.querySelectorAll(".revelar").forEach(el => observador.observe(el));
+
+  // Pétalos de rosa cayendo (ligero, respeta reduced-motion)
+  const lienzo = document.getElementById("petalos");
+  const ctx = lienzo.getContext("2d");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let petalos = [];
+  const intensidad = reduceMotion ? 0 : 14;
+
+  function ajustar() {
+    lienzo.width = window.innerWidth * devicePixelRatio;
+    lienzo.height = window.innerHeight * devicePixelRatio;
+    ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+  }
+  window.addEventListener("resize", ajustar);
+  ajustar();
+
+  function nuevoPetalo(desdeArriba) {
+    return {
+      x: Math.random() * window.innerWidth,
+      y: desdeArriba ? -20 : Math.random() * window.innerHeight,
+      tam: 5 + Math.random() * 7,
+      velY: 0.4 + Math.random() * 0.8,
+      velX: -0.3 + Math.random() * 0.6,
+      giro: Math.random() * Math.PI * 2,
+      velGiro: -0.01 + Math.random() * 0.02,
+      tono: Math.random() < 0.7 ? "232, 160, 180" : "217, 185, 138",
+      alfa: 0.35 + Math.random() * 0.4
+    };
+  }
+  for (let i = 0; i < intensidad; i++) petalos.push(nuevoPetalo(false));
+
+  function dibujarPetalo(p) {
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.giro);
+    ctx.fillStyle = "rgba(" + p.tono + "," + p.alfa + ")";
+    ctx.beginPath();
+    ctx.ellipse(0, 0, p.tam, p.tam * 0.55, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function animar() {
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    for (const p of petalos) {
+      p.y += p.velY;
+      p.x += p.velX + Math.sin(p.y / 60) * 0.3;
+      p.giro += p.velGiro;
+      if (p.y > window.innerHeight + 30) Object.assign(p, nuevoPetalo(true));
+      dibujarPetalo(p);
+    }
+    if (!reduceMotion) requestAnimationFrame(animar);
+  }
+  if (!reduceMotion) animar();
+
+  // Botón final: lluvia de pétalos + mensaje
+  document.getElementById("boton-si").addEventListener("click", function () {
+    document.getElementById("respuesta").classList.add("mostrar");
+    this.disabled = true;
+    this.style.opacity = "0.6";
+    this.textContent = "Juntos, siempre 💛";
+    if (!reduceMotion) {
+      for (let i = 0; i < 60; i++) {
+        const p = nuevoPetalo(true);
+        p.y = -Math.random() * window.innerHeight * 0.8;
+        p.velY += 0.6;
+        petalos.push(p);
+      }
+      // Volver a la calma después de la lluvia
+      setTimeout(() => { petalos = petalos.slice(0, 20); }, 15000);
+    }
+  });
+</script>
+</body>
+</html>
