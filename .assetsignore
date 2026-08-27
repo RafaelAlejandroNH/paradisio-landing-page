@@ -1,0 +1,9 @@
+# Excluir del deploy de Cloudflare Workers (no son parte del sitio)
+.git
+.gitignore
+.gitattributes
+.assetsignore
+wrangler.jsonc
+node_modules
+.claude
+**/.claude
