@@ -4,3 +4,7 @@
 !.dev.vars.example
 .env*
 !.env.example
+
+# Carpetas de trabajo de Claude
+.claude/
+**/.claude/
