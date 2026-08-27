@@ -8,3 +8,7 @@
 # Carpetas de trabajo de Claude
 .claude/
 **/.claude/
+
+# Originales pesados de Fotos2 (la pagina usa solo las miniaturas)
+Erica/Fotos2/*
+!Erica/Fotos2/mini/

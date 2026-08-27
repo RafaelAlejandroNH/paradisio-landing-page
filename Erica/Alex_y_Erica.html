@@ -264,6 +264,23 @@
     grid-row: span 2;
     aspect-ratio: 1;
   }
+  .muro + .muro { margin-top: .5rem; }
+  #boton-mas {
+    display: block;
+    margin: 1.8rem auto 0;
+    font-family: "Figtree", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--rosa);
+    background: none;
+    border: 1px solid var(--rosa);
+    border-radius: 999px;
+    padding: .8rem 1.8rem;
+    cursor: pointer;
+    transition: background .25s ease, color .25s ease;
+  }
+  #boton-mas:hover, #boton-mas:focus-visible { background: var(--rosa); color: var(--noche); }
+  #boton-mas:focus-visible { outline: 2px solid var(--crema); outline-offset: 3px; }
 
   /* ——— Video del futuro ——— */
   .marco-video {
@@ -458,6 +475,18 @@
       <div class="polaroid"><img src="Fotos/mini/df76bfd4-74bf-46cd-9ddc-76d67543ff36.jpg" alt="" loading="lazy"></div>
       <div class="polaroid"><img src="Fotos/mini/IMG_5980.jpg" alt="" loading="lazy"></div>
       <div class="polaroid"><img src="Fotos/mini/IMG_9118.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos2/mini/IMG_0005.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos2/mini/0d364ca2-842c-435b-b3c5-71be7a8eb7c9.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos2/mini/IMG_1472.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos2/mini/197e14c5-c987-40e4-913e-1eaa10ead2b9.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos2/mini/IMG_2287.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos2/mini/5baf1fde-65ba-4313-9d2b-8214572ff521.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos2/mini/IMG_3879.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos2/mini/83691973-e876-4422-8504-3b1eed181e5c.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos2/mini/IMG_5575.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos2/mini/a0b2607d-b85b-4917-902b-13299a8a1e09.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos2/mini/IMG_7828.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid"><img src="Fotos2/mini/f31bc813-3217-4a96-be32-58f80a65b607.jpg" alt="" loading="lazy"></div>
     </div>
   </div>
 
@@ -533,6 +562,8 @@
       <img src="Fotos/mini/IMG_7426.jpg" alt="" loading="lazy">
       <img src="Fotos/mini/IMG_7501.jpg" alt="" loading="lazy">
     </div>
+    <div class="muro" id="muro-extra" hidden></div>
+    <button id="boton-mas" type="button">Ver todos nuestros recuerdos 🌹</button>
   </section>
 
   <section class="seccion revelar">
@@ -679,11 +710,55 @@
     ctx.restore();
   }
 
+  // ——— Muro extra: se cargan solo al tocar "Ver todos nuestros recuerdos" ———
+  const recuerdosExtra = [
+    "0dd5e291-6a4c-45cb-8d15-9aa425fc3fac","12644f1f-3e8b-424d-bc48-dc3252568097","27b577a9-3604-4411-8a5a-29777edf03fb",
+    "39776047-2415-4881-ae9d-a87c7da26d6b","5a8b5b6a-54d3-4b0a-afd5-fbdbc75d00c9","5E53CDE9-F577-4D3E-905E-2F276E171126",
+    "5ef6049e-d6e3-49ba-a4c9-2938e3ef484a","6c086e6b-024e-4841-8a4e-668e9eabe36a","80966F6A-D177-45A4-AC20-A1B8D7F43FA4",
+    "82097b49-f789-4cd5-ae3b-aae5be093944","88b0412a-9cfe-4579-b2fb-07f061bb9e80","89fea22d-52af-44a2-9aa2-18c5920a3d6f",
+    "8dc3cd10-d0ef-4acc-aba4-0595e6c9dd2f","92d4c4f0-9073-4490-8d4f-8eca328abb79","9497bbd3-e5e5-4b7a-8f4b-3d4780bfda0e",
+    "9753fdf9-fa71-4082-9dc5-6d463d778c49","a9b5ee3b-ae4f-4c68-8d30-dfb766deaded","acf1a8b0-eef7-41fb-9cff-a3d661922e8a",
+    "afdadb20-b81d-47ef-a7e3-78549e27721d","B8C27B0D-5219-48E5-B333-F570A3528CE6","bac69596-e9d6-40b8-8630-03174a9750b7",
+    "be289771-2575-49ce-8711-12fd6ab3942a","e1c61db2-af2c-47b5-9998-6b330066dd97","e5d8d58d-3dec-4dbf-8bec-68c63d3d29ab",
+    "e9715159-0f27-41ce-8fb8-2e31e955b779","e97b8cf7-28a1-4e19-b7bd-9d4c81559956","f685b331-9c2d-48fa-b66f-08228fd83095",
+    "IMG_0050","IMG_0115","IMG_0117","IMG_0202","IMG_0204","IMG_0268","IMG_0878","IMG_1005","IMG_1165","IMG_1177",
+    "IMG_1183","IMG_1186","IMG_1483","IMG_1504","IMG_2185","IMG_2188","IMG_2285","IMG_3237","IMG_3447","IMG_3520",
+    "IMG_3819","IMG_3838","IMG_4200","IMG_4563","IMG_4918","IMG_5050","IMG_5310","IMG_5519","IMG_5527","IMG_5531",
+    "IMG_5576","IMG_5986","IMG_5990","IMG_6775","IMG_6949","IMG_6975","IMG_7072","IMG_7132","IMG_7230","IMG_7242-1",
+    "IMG_7242","IMG_7244","IMG_7248","IMG_7261","IMG_7279","IMG_7425","IMG_7512","IMG_7817","IMG_7822","IMG_7939",
+    "IMG_7984","IMG_8164","IMG_8173","IMG_8380","IMG_8704","IMG_8872","IMG_9266","IMG_9483","IMG_9503","IMG_9851",
+    "IMG_9852","IMG_9934","IMG_9960"
+  ];
+  const botonMas = document.getElementById("boton-mas");
+  botonMas.addEventListener("click", () => {
+    const muroExtra = document.getElementById("muro-extra");
+    if (muroExtra.hidden) {
+      if (!muroExtra.childElementCount) {
+        for (const n of recuerdosExtra) {
+          const im = document.createElement("img");
+          im.src = "Fotos2/mini/" + n + ".jpg";
+          im.alt = "";
+          im.loading = "lazy";
+          muroExtra.appendChild(im);
+        }
+      }
+      muroExtra.hidden = false;
+      botonMas.textContent = "Guardar los recuerdos 💛";
+    } else {
+      muroExtra.hidden = true;
+      botonMas.textContent = "Ver todos nuestros recuerdos 🌹";
+    }
+  });
+
   // ——— Fotos chiquitas que flotan entre los petalos ———
   const fotosFlotantes = [
-    "IMG_7832.jpg", "IMG_7916.jpg", "IMG_7986.jpg", "IMG_8106.jpg", "IMG_8122.jpg",
-    "IMG_8141.jpg", "IMG_8384.jpg", "IMG_8401.jpg", "IMG_8696.jpg", "IMG_9322.jpg"
-  ].map(n => { const im = new Image(); im.src = "Fotos/mini/" + n; return im; });
+    "Fotos/mini/IMG_7832.jpg", "Fotos/mini/IMG_7916.jpg", "Fotos/mini/IMG_7986.jpg", "Fotos/mini/IMG_8106.jpg",
+    "Fotos/mini/IMG_8122.jpg", "Fotos/mini/IMG_8141.jpg", "Fotos/mini/IMG_8384.jpg", "Fotos/mini/IMG_8401.jpg",
+    "Fotos/mini/IMG_8696.jpg", "Fotos/mini/IMG_9322.jpg",
+    "Fotos2/mini/IMG_0848.jpg", "Fotos2/mini/IMG_1174.jpg", "Fotos2/mini/IMG_2292.jpg", "Fotos2/mini/IMG_3510.jpg",
+    "Fotos2/mini/IMG_4562.jpg", "Fotos2/mini/IMG_5580.jpg", "Fotos2/mini/IMG_6842.jpg", "Fotos2/mini/IMG_7259.jpg",
+    "Fotos2/mini/IMG_7424.jpg", "Fotos2/mini/IMG_8123.jpg", "Fotos2/mini/IMG_9249.jpg", "Fotos2/mini/IMG_9636.jpg"
+  ].map(n => { const im = new Image(); im.src = n; return im; });
   let medallones = [];
 
   function nuevoMedallon() {
